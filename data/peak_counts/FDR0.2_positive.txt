@@ -1,0 +1,9 @@
+bed	FDR	peak
+GABA_1v0hr.bed	0.2	1878
+GABA_6v0hr.bed	0.2	4710
+NmCp_glut_1v0hr.bed	0.2	609
+NmCp_glut_6v0hr.bed	0.2	1661
+NPC_1v0hr.bed	0.2	77
+NPC_6v0hr.bed	0.2	201
+NpCm_glut_1v0hr.bed	0.2	2122
+NpCm_glut_6v0hr.bed	0.2	3794

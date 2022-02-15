@@ -1,0 +1,13 @@
+bed	peaks
+GABA_0hr_specific_peaks.bed	51288
+GABA_1hr_specific_peaks.bed	61478
+GABA_6hr_specific_peaks.bed	81879
+NmCp_glut_0hr_specific_peaks.bed	42209
+NmCp_glut_1hr_specific_peaks.bed	62844
+NmCp_glut_6hr_specific_peaks.bed	74934
+NPC_0hr_specific_peaks.bed	78637
+NPC_1hr_specific_peaks.bed	87878
+NPC_6hr_specific_peaks.bed	109731
+NpCm_glut_0hr_specific_peaks.bed	86869
+NpCm_glut_1hr_specific_peaks.bed	105275
+NpCm_glut_6hr_specific_peaks.bed	111968

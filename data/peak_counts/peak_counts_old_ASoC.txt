@@ -1,0 +1,6 @@
+bed	peaks
+GSE129017_cleanup_CN_max.bed.gz	256947
+GSE129017_cleanup_DN_max.bed.gz	281210
+GSE129017_cleanup_GA_max.bed.gz	278416
+GSE129017_cleanup_ips_max.bed.gz	336835
+GSE129017_cleanup_NPC_max.bed.gz	256085
