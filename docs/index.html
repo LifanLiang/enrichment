@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -230,6 +233,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +303,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -390,16 +466,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree5118f7789c74456a557097590c9b0a2b39b9d033targetblank5118f77a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/5118f7789c74456a557097590c9b0a2b39b9d033" target="_blank">5118f77</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreefcc28344860cbc79fc8da3e6768e9e3856433c9etargetblankfcc2834a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/fcc28344860cbc79fc8da3e6768e9e3856433c9e" target="_blank">fcc2834</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree5118f7789c74456a557097590c9b0a2b39b9d033targetblank5118f77a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreefcc28344860cbc79fc8da3e6768e9e3856433c9etargetblankfcc2834a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/5118f7789c74456a557097590c9b0a2b39b9d033" target="_blank">5118f77</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/fcc28344860cbc79fc8da3e6768e9e3856433c9e" target="_blank">fcc2834</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -408,18 +484,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .DS_Store
     Ignored:    data/.DS_Store
-
-Untracked files:
-    Untracked:  data/ASoC_Fig3B.jpeg
-    Untracked:  data/NpCm_glut_6v0hr.bed
-    Untracked:  data/enrich_results/
-    Untracked:  data/peak_counts/
-    Untracked:  data/reproduced_Fig3B.png
-    Untracked:  data/sc_vs_bulk.txt
-
-Unstaged changes:
-    Deleted:    analysis/about.Rmd
-    Deleted:    analysis/license.Rmd
 
 </code></pre>
 <p>
@@ -458,6 +522,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/fcc28344860cbc79fc8da3e6768e9e3856433c9e/analysis/index.Rmd" target="_blank">fcc2834</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+<td>
+wflow_publish("analysis")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LifanLiang/enrichment/d26adb4b8198492686dff3f5df121775cab79eea/docs/index.html" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -524,6 +622,43 @@ This is the original figure
 <div id="fdr-correction" class="section level2">
 <h2>FDR correction</h2>
 <p>The original FDR is effectively using Bonferroni correction. <img src="figure/index.Rmd/correction-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-correction-1">
+Past versions of correction-1.png
+</button>
+</p>
+<div id="fig-correction-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/correction-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="enrichment-analysis-of-fwer0.25" class="section level2">
 <h2>Enrichment analysis of FWER&lt;0.25</h2>
@@ -570,12 +705,86 @@ This is the original figure
 </tbody>
 </table>
 <p><img src="figure/index.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/unnamed-chunk-4-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR &lt; 0.05.</p>
 </div>
 <div id="enrichment-of-positive-control" class="section level2">
 <h2>Enrichment of positive control</h2>
 <p>The baseline used in the last paper was adopted here.</p>
 <p><img src="figure/index.Rmd/positive_control-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-positive_control-1">
+Past versions of positive_control-1.png
+</button>
+</p>
+<div id="fig-positive_control-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/positive_control-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="enrichment-analysis-of-cell-type-and-time-point-specific-differentially-binding-peaks" class="section level2">
 <h2>Enrichment analysis of cell type and time point specific differentially binding peaks</h2>
@@ -717,6 +926,43 @@ This is the original figure
 </tbody>
 </table>
 <p><img src="figure/index.Rmd/enrichment_12peaks-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-enrichment_12peaks-1">
+Past versions of enrichment_12peaks-1.png
+</button>
+</p>
+<div id="fig-enrichment_12peaks-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/enrichment_12peaks-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="enrichment-analysis-of-dap-at-fdr0.05" class="section level2">
 <h2>Enrichment analysis of DAP at FDR&lt;0.05</h2>
@@ -764,6 +1010,43 @@ This is the original figure
 </tbody>
 </table>
 <p><img src="figure/index.Rmd/enrichment_DAP_bothside-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-enrichment_DAP_bothside-1">
+Past versions of enrichment_DAP_bothside-1.png
+</button>
+</p>
+<div id="fig-enrichment_DAP_bothside-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/enrichment_DAP_bothside-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="enrichment-analysis-of-inducible-elements" class="section level2">
 <h2>Enrichment analysis of inducible elements</h2>
@@ -811,6 +1094,43 @@ This is the original figure
 </tbody>
 </table>
 <p><br> <img src="figure/index.Rmd/enrichment_DAP_positive-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-enrichment_DAP_positive-1">
+Past versions of enrichment_DAP_positive-1.png
+</button>
+</p>
+<div id="fig-enrichment_DAP_positive-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/d26adb4b8198492686dff3f5df121775cab79eea/docs/figure/index.Rmd/enrichment_DAP_positive-1.png" target="_blank">d26adb4</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -898,6 +1218,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -930,6 +1252,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
