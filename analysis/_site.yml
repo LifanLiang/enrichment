@@ -1,14 +1,14 @@
-name: "enrichment"
+name: enrichment
 output_dir: ../docs
 navbar:
-  title: "enrichment"
+  title: enrichment
   left:
   - text: Home
     href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/LifanLiang/enrichment
 output:
   workflowr::wflow_html:
     toc: yes
