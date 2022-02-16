@@ -1,0 +1,5 @@
+bed	peak
+GABA_static.bed	49730
+NmCp_glut_static.bed	41399
+NPC_static.bed	78075
+NpCm_glut_static.bed	84196
