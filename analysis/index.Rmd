@@ -25,14 +25,10 @@ plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 ```
 
 ## Reproducing Fig3b in the ASoC paper
-```{r, echo=FALSE, fig.cap="This is the reproduce figure"}
-knitr::include_graphics("data/reproduced_Fig3B.png")
-```
-<br><br><br>
+![](assets/reproduced_Fig3B.png)
 
-```{r, echo=FALSE, fig.cap="This is the original figure"}
-knitr::include_graphics("data/ASoC_Fig3B.jpeg")
-```
+<br><br><br>
+![](assets/ASoC_Fig3B.jpeg)
 
 
 ## Schizophrenian PGC3
