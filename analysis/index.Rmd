@@ -50,7 +50,9 @@ qval <- sapply(strsplit(bedd$name, "\\^"), function(x) {as.numeric(x[3])})
 plot(qval/pval, xlab=paste0("Peaks in NpCm_glut_6v0hr.bed sorted by pvalues"), ylab="FDR/P")
 ```
 
-## Enrichment analysis of FWER<0.25
+## TORUS enrichment analysis
+
+### Enrichment analysis of FWER<0.25
 ```{r, echo=FALSE}
 peak.counts.bonf25 <- read.table("data/peak_counts/FDR0.25.txt", header=T)
 knitr::kable(peak.counts.bonf25[,c("bed","peak")])
@@ -67,7 +69,7 @@ plot_or(enrich.bonf25, "", xlab = expression(paste(log[2], ' fold enrichment of 
 
 After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR < 0.05. 
 
-## Enrichment of positive control
+### Enrichment of positive control
 
 The baseline used in the last paper was adopted here.
 
@@ -77,7 +79,7 @@ plot_or(enrich.pos, "", xlab = expression(paste(log[2], ' fold enrichment of SZ 
         ylab = "Functional annotations")
 ```
 
-## Enrichment analysis of cell type and time point specific differentially binding peaks
+### Peaks called at specific cell type and time point
 
 The number of peaks called for each cell type at each timepoint: 
 ```{r table_12peaks, echo=FALSE}
@@ -105,7 +107,7 @@ plot_or(enrich.12peaks, "", xlab = expression(paste(log[2], ' fold enrichment of
         ylab = "Functional annotations")
 ```
 
-## Enrichment analysis of DAP at FDR<0.05
+### DAP at FDR<0.05
 The number of peaks selected with FDR<0.05:
 ```{r table_DAP_bothside, echo=FALSE}
 peak.counts.FDR5 <- read.table("data/peak_counts/FDR0.05.txt", header=T)
@@ -118,7 +120,7 @@ plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichme
         ylab = "Functional annotations")
 ```
 
-## Enrichment analysis of inducible elements
+### Inducible elements
 
 The number of peaks selected with FDR<0.05 & log(fold change)>0:
 ```{r table_DAP_positive, echo=FALSE}
@@ -132,4 +134,19 @@ colnames(enrich.dap.pos)  = c("annotation", "logOR", "lower", "upper")
 plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
+### DAP with non_inducible elements
 
+Peaks in resting condition with at least 1bp overlap with DAPs (6v0 or 1v0) were removed.
+```{r table_static, echo=FALSE}
+peak.counts.static <- read.table("data/peak_counts/static_bothside.txt", header=T)
+knitr::kable(peak.counts.static)
+```
+<br>
+```{r enrichment_with_baseline, echo=FALSE}
+enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
+colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
+enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
+colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
+table <- rbind(enrich.dap, enrich.static)
+plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
