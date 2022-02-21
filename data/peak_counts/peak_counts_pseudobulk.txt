@@ -1,0 +1,13 @@
+bed	peaks
+GABA_bam_0hr_peaks.narrowPeak	156156
+GABA_bam_1hr_peaks.narrowPeak	159228
+GABA_bam_6hr_peaks.narrowPeak	179232
+NEFMm_CUX2p_bam_0hr_peaks.narrowPeak	112078
+NEFMm_CUX2p_bam_1hr_peaks.narrowPeak	146826
+NEFMm_CUX2p_bam_6hr_peaks.narrowPeak	152541
+NEFMp_CUX2m_bam_0hr_peaks.narrowPeak	258987
+NEFMp_CUX2m_bam_1hr_peaks.narrowPeak	259057
+NEFMp_CUX2m_bam_6hr_peaks.narrowPeak	268091
+NPC_bam_0hr_peaks.narrowPeak	192069
+NPC_bam_1hr_peaks.narrowPeak	187882
+NPC_bam_6hr_peaks.narrowPeak	209656
