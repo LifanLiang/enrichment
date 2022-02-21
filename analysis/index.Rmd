@@ -50,103 +50,61 @@ qval <- sapply(strsplit(bedd$name, "\\^"), function(x) {as.numeric(x[3])})
 plot(qval/pval, xlab=paste0("Peaks in NpCm_glut_6v0hr.bed sorted by pvalues"), ylab="FDR/P")
 ```
 
-## TORUS enrichment analysis
+## Summary for different peak sets
 
-### Enrichment analysis of FWER<0.25
+* Number of peaks in FWER<0.25 differential peaks
 ```{r, echo=FALSE}
 peak.counts.bonf25 <- read.table("data/peak_counts/FDR0.25.txt", header=T)
 knitr::kable(peak.counts.bonf25[,c("bed","peak")])
 ```
+<br><br>
 
-```{r, echo=F}
-enrich.bonf25 <- read.table("data/enrich_results/bonf25_bothside.tsv", header=T)
-colnames(enrich.bonf25)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.bonf25, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
-```
-
-
-
-After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR < 0.05. 
-
-### Enrichment of positive control
-
-The baseline used in the last paper was adopted here.
-
-```{r positive_control, echo=FALSE}
-enrich.pos <- read.table("data/enrich_results/positive_control.tsv", header=T)
-plot_or(enrich.pos, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
-```
-
-### Peaks called at specific cell type and time point
-
-The number of peaks called for each cell type at each timepoint: 
+* Number of peaks called for each cell type at each timepoint
 ```{r table_12peaks, echo=FALSE}
 peak.counts.12peaks <- read.table("data/peak_counts/12peaks.txt", header=T)
 knitr::kable(peak.counts.12peaks)
 ```
 <br><br>
-The number of peaks in the last paper
+* The number of peaks in the last paper
 ```{r, echo=FALSE}
 peak.counts.ASoC <- read.table("data/peak_counts/peak_counts_old_ASoC.txt", header=T)
 knitr::kable(peak.counts.ASoC)
 ```
 <br><br>
-The perportion of 0hr single cell peaks that overlaps with bulk peaks:
+* The proportion of 0hr single cell peaks that overlaps with bulk peaks:
 ```{r, echo=FALSE}
 entailment <- read.table("data/sc_vs_bulk.txt", header=T, row.names = 1)
 rownames(entailment) <- c("GABA_0hr", "NmCp_glut_0hr", "NPC_0hr", "NpCm_glut_0hr")
 colnames(entailment) <- c("CN", "DN","GA","ips","NPC")
 knitr::kable(entailment)
 ```
-
-```{r enrichment_12peaks, echo=FALSE}
-enrich.12peaks <- read.table("data/enrich_results/12peaks.tsv", header=T)
-plot_or(enrich.12peaks, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
-```
-
-### DAP at FDR<0.05
-The number of peaks selected with FDR<0.05:
+<br><br>
+* The number of peaks selected with FDR<0.05:
 ```{r table_DAP_bothside, echo=FALSE}
 peak.counts.FDR5 <- read.table("data/peak_counts/FDR0.05.txt", header=T)
 knitr::kable(peak.counts.FDR5[c('bed','peak')])
 ```
-```{r enrichment_DAP_bothside, echo=FALSE}
-enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
-colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
-```
-
-### Inducible elements
-
-The number of peaks selected with FDR<0.05 & log(fold change)>0:
+<br><br>
+* The number of peaks selected with FDR<0.05 & log(fold change)>0:
 ```{r table_DAP_positive, echo=FALSE}
 peak.counts.FDR5.pos <- read.table("data/peak_counts/FDR0.05_positive.txt", header=T)
 knitr::kable(peak.counts.FDR5.pos[c('bed','peak')])
 ```
-<br>
-```{r enrichment_DAP_positive, echo=FALSE}
-enrich.dap.pos <- read.table("data/enrich_results/FDR5_positive.tsv", header=T)
-colnames(enrich.dap.pos)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
-```
-
-### DAP with non_inducible elements
-
-Peaks in resting condition with at least 1bp overlap with DAPs (6v0 or 1v0) were removed.
+<br><br>
+* Peaks in resting condition with at least 1bp overlap with DAPs (6v0 or 1v0) were removed. Actually a few hundred peaks have been removed.
 ```{r table_static, echo=FALSE}
 peak.counts.static <- read.table("data/peak_counts/static_bothside.txt", header=T)
 knitr::kable(peak.counts.static)
 ```
-<br>
-```{r enrichment_with_baseline, echo=FALSE}
-enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
-colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
-enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
-colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
-table <- rbind(enrich.dap, enrich.static)
-plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+<br><br>
+* Peaks called directly through MACS2 by merging bam files within the same cell type and the same time point. Called pseudo bulk peaks here.
+```{r table_pseudobulk, echo=FALSE}
+peak.counts.pseudo <- read.table("data/peak_counts/peak_counts_pseudobulk.txt", header=T)
+knitr::kable(peak.counts.pseudo)
+```
+<br><br>
+* Remove differential peaks from the pseudo bulk peaks
+```{r table_static_pseudobulk, echo=FALSE}
+peak.counts.static.pseudo <- read.table("data/peak_counts/peak_counts_static_pseudobulk.txt", header=T)
+knitr::kable(peak.counts.static.pseudo)
 ```

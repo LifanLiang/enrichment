@@ -1,0 +1,64 @@
+---
+title: "Stratified LD score regression"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    number_sections: no
+    toc: yes
+    toc_float: true
+editor_options:
+  chunk_output_type: console
+---
+
+### Prepare input
+* PGC3 summary statistics was merged with HapMap3 snplist. 
+* Full baseline model (53 annotation) from Alke's group was used together
+* LD score was computed using 1000G panel and the same list of SNPs as the baseline's
+
+### Enrichment analysis
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(rtracklayer)
+
+plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+  p1 <- ggplot(dat, aes(y=annotation)) + 
+    geom_point(aes(x=Enrichment), colour="#800000") + #plot OR
+    geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
+  p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
+  p1
+}
+```
+
+```{r , echo=F}
+enrich.ld <- read.table("data/enrich_results/PGC3_diff.results.txt", sep="\t", header=T, row.names=1)
+annot <- c('GABA_1v0hr_ucsc',
+ 'GABA_static',
+ 'NEFMm_CUX2p_bam_0hr_peaks',
+ 'GABA_6v0hr_ucsc',
+ 'NmCp_glut_1v0hr_ucsc',
+ 'NpCm_glut_static',
+ 'NEFMp_CUX2m_bam_0hr_peaks',
+ 'NpCm_glut_6v0hr_ucsc',
+ 'NPC_6v0hr_ucsc',
+ 'NpCm_glut_1v0hr_ucsc',
+ 'NPC_1v0hr_ucsc',
+ 'GABA_bam_0hr_peaks',
+ 'NPC_bam_0hr_peaks',
+ 'NmCp_glut_6v0hr_ucsc',
+ 'NmCp_glut_static',
+ 'NPC_static')
+row.names(enrich.ld)[(nrow(enrich.ld)-15):nrow(enrich.ld)] <- annot
+temp <- enrich.ld[c(annot,"Coding_UCSCL2_0", "Conserved_LindbladTohL2_0",
+                    "Promoter_UCSCL2_0"), 4:5]
+temp$annotation <- factor(rownames(temp), levels = rownames(temp)[c(17,18,19,15,6,16,2,3,7,13,12,14,5,8,10,9,11,4,1)])
+temp$lower <- temp$Enrichment - 2 * temp$Enrichment_std_error
+temp$upper <- temp$Enrichment + 2 * temp$Enrichment_std_error
+plot_or(temp, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+
+
+
+
+

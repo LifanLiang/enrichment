@@ -1,0 +1,84 @@
+---
+title: "TORUS enrichemnt"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    number_sections: no
+    toc: yes
+    toc_float: true
+editor_options:
+  chunk_output_type: console
+---
+
+## TORUS enrichment analysis
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(rtracklayer)
+
+plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+  p1 <- ggplot(dat, aes(y=annotation)) + 
+    geom_point(aes(x=logOR), colour="#800000") + #plot OR
+    geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
+  p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
+  p1
+}
+```
+
+
+### Enrichment analysis of FWER<0.25
+
+```{r, echo=F}
+enrich.bonf25 <- read.table("data/enrich_results/bonf25_bothside.tsv", header=T)
+colnames(enrich.bonf25)  = c("annotation", "logOR", "lower", "upper")
+plot_or(enrich.bonf25, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
+        ylab = "Functional annotations")
+```
+
+
+
+After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR < 0.05. 
+
+### Enrichment of positive control
+
+The baseline used in the last paper was adopted here.
+
+```{r positive_control, echo=FALSE}
+enrich.pos <- read.table("data/enrich_results/positive_control.tsv", header=T)
+plot_or(enrich.pos, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
+        ylab = "Functional annotations")
+```
+
+### Peaks called at specific cell type and time point
+
+```{r enrichment_12peaks, echo=FALSE}
+enrich.12peaks <- read.table("data/enrich_results/12peaks.tsv", header=T)
+plot_or(enrich.12peaks, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
+        ylab = "Functional annotations")
+```
+
+### DAP at FDR<0.05
+```{r enrichment_DAP_bothside, echo=FALSE}
+enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
+colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
+plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
+        ylab = "Functional annotations")
+```
+
+### Inducible elements
+```{r enrichment_DAP_positive, echo=FALSE}
+enrich.dap.pos <- read.table("data/enrich_results/FDR5_positive.tsv", header=T)
+colnames(enrich.dap.pos)  = c("annotation", "logOR", "lower", "upper")
+plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+### DAP with non_inducible elements
+```{r enrichment_with_baseline, echo=FALSE}
+enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
+colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
+enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
+colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
+table <- rbind(enrich.dap, enrich.static)
+plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
