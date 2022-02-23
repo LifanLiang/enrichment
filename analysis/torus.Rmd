@@ -89,7 +89,7 @@ enrich.pseudo <- read.table("data/enrich_results/pseudobluk.tsv", header=T)
 colnames(enrich.pseudo)  = c("annotation", "logOR", "lower", "upper")
 enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
 colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
-table <- rbind(enrich.dap, enrich.static)
+table <- rbind(enrich.pseudo, enrich.static)
 table$annotation <- factor(table$annotation, levels=table$annotation)
 plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
