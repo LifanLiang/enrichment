@@ -82,3 +82,14 @@ table <- rbind(enrich.dap, enrich.static)
 plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
+### Pseudo bulk peak sets
+Since Siwei provide an updated another peak sets called from pseudo bulk approach, we rerun enrichment analysis. And the results are similar with the previous peak set, though the number of peaks are much bigger (refers to the summary statics page). The non-inducible part of the peaks ("static" in the plot) also dropped performance.
+```{r enrichment_pseudo_bulk, echo=FALSE}
+enrich.pseudo <- read.table("data/enrich_results/pseudobluk.tsv", header=T)
+colnames(enrich.pseudo)  = c("annotation", "logOR", "lower", "upper")
+enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
+colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
+table <- rbind(enrich.dap, enrich.static)
+table$annotation <- factor(table$annotation, levels=table$annotation)
+plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
