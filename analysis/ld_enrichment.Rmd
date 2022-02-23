@@ -54,9 +54,19 @@ temp <- enrich.ld[c(annot,"Coding_UCSCL2_0", "Conserved_LindbladTohL2_0",
 temp$annotation <- factor(rownames(temp), levels = rownames(temp)[c(17,18,19,15,6,16,2,3,7,13,12,14,5,8,10,9,11,4,1)])
 temp$lower <- temp$Enrichment - 2 * temp$Enrichment_std_error
 temp$upper <- temp$Enrichment + 2 * temp$Enrichment_std_error
-plot_or(temp, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
+<br><br>
+We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are more enriched than the differential peaks. However, when the differential elements were removed from 0hr peaks ("static" peaks in the plot), the enrichment is reduced dramatically. 
+```{r, echo=F}
+ld.smaller <- read.table("data/enrich_results/PGC3_diff_smaller.ldsc.results", sep="\t", header=T, row.names=1)
+ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
+ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
+ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
+
+plot_or(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
 
 
 
