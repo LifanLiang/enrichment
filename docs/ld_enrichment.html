@@ -472,16 +472,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree3b87d27076c0e0943531c757de5077fecb05d3b1targetblank3b87d27a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/3b87d27076c0e0943531c757de5077fecb05d3b1" target="_blank">3b87d27</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree8245face408fa2276eab4d034b2aa88e58a3349atargetblank8245faca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/8245face408fa2276eab4d034b2aa88e58a3349a" target="_blank">8245fac</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree3b87d27076c0e0943531c757de5077fecb05d3b1targetblank3b87d27a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree8245face408fa2276eab4d034b2aa88e58a3349atargetblank8245faca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/3b87d27076c0e0943531c757de5077fecb05d3b1" target="_blank">3b87d27</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/8245face408fa2276eab4d034b2aa88e58a3349a" target="_blank">8245fac</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -528,6 +528,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/8245face408fa2276eab4d034b2aa88e58a3349a/analysis/ld_enrichment.Rmd" target="_blank">8245fac</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-23
+</td>
+<td>
+wflow_publish("analysis")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LifanLiang/enrichment/dee54c5fd46e3a2bb8c9d0c53e203477bdd38b58/docs/ld_enrichment.html" target="_blank">dee54c5</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -596,6 +630,7 @@ data
 </div>
 <div id="enrichment-analysis" class="section level3">
 <h3>Enrichment analysis</h3>
+<p>The annotation includes differential peaks (1v0hr and 6v0hr bothside of fold change), resting condition peaks called directly through MACS2 by merging cells within the same cell type and time point, and “static” peaks that remains in resting condition after removing the differential peaks.</p>
 <p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
@@ -621,6 +656,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/LifanLiang/enrichment/blob/dee54c5fd46e3a2bb8c9d0c53e203477bdd38b58/docs/figure/ld_enrichment.Rmd/unnamed-chunk-1-1.png" target="_blank">dee54c5</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-23
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/LifanLiang/enrichment/blob/13cd49c77d265a60a4cdf08d34d5e8f877be106a/docs/figure/ld_enrichment.Rmd/unnamed-chunk-1-1.png" target="_blank">13cd49c</a>
 </td>
 <td>
@@ -634,7 +680,44 @@ Lifan Liang
 </table>
 </div>
 </div>
-<p><br><br> We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are more enriched than the differential peaks. However, when the differential elements were removed from 0hr peaks (“static” peaks in the plot), the enrichment is reduced dramatically. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><br><br> We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks (“static” peaks in the plot), the enrichment is reduced dramatically. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/dee54c5fd46e3a2bb8c9d0c53e203477bdd38b58/docs/figure/ld_enrichment.Rmd/unnamed-chunk-2-1.png" target="_blank">dee54c5</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
