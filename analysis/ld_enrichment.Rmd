@@ -16,6 +16,7 @@ editor_options:
 * LD score was computed using 1000G panel and the same list of SNPs as the baseline's
 
 ### Enrichment analysis
+The annotation includes differential peaks (1v0hr and 6v0hr bothside of fold change), resting condition peaks called directly through MACS2 by merging cells within the same cell type and time point, and "static" peaks that remains in resting condition after removing the differential peaks.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
@@ -58,7 +59,7 @@ plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotat
 ```
 
 <br><br>
-We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are more enriched than the differential peaks. However, when the differential elements were removed from 0hr peaks ("static" peaks in the plot), the enrichment is reduced dramatically. 
+We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks ("static" peaks in the plot), the enrichment is reduced dramatically. 
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/PGC3_diff_smaller.ldsc.results", sep="\t", header=T, row.names=1)
 ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
