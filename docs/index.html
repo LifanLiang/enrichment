@@ -381,7 +381,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-02-21
+<strong>Last updated:</strong> 2022-03-07
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -472,16 +472,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreed6a9b1b679ac1d1656f6a44c9d9aecb4513ce749targetblankd6a9b1ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/d6a9b1b679ac1d1656f6a44c9d9aecb4513ce749" target="_blank">d6a9b1b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreef8ad4c160bc3da3ab2337398bc906a4b72bc7ce2targetblankf8ad4c1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/f8ad4c160bc3da3ab2337398bc906a4b72bc7ce2" target="_blank">f8ad4c1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreed6a9b1b679ac1d1656f6a44c9d9aecb4513ce749targetblankd6a9b1ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreef8ad4c160bc3da3ab2337398bc906a4b72bc7ce2targetblankf8ad4c1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/d6a9b1b679ac1d1656f6a44c9d9aecb4513ce749" target="_blank">d6a9b1b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/f8ad4c160bc3da3ab2337398bc906a4b72bc7ce2" target="_blank">f8ad4c1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -489,13 +489,12 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .DS_Store
+    Ignored:    .Rhistory
     Ignored:    data/.DS_Store
+    Ignored:    data/enrich_results/.DS_Store
 
 Untracked files:
-    Untracked:  data/enrich_results/PGC3_diff.results.txt
-    Untracked:  data/enrich_results/peak_counts_pseudobulk.txt
-    Untracked:  data/peak_counts/peak_counts_pseudobulk.txt
-    Untracked:  data/peak_counts/peak_counts_static_pseudobulk.txt
+    Untracked:  dynamic_vs_static_marginal.tsv
 
 </code></pre>
 <p>
@@ -534,6 +533,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/f8ad4c160bc3da3ab2337398bc906a4b72bc7ce2/analysis/index.Rmd" target="_blank">f8ad4c1</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-03-07
+</td>
+<td>
+wflow_publish(c("analysis", "data"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LifanLiang/enrichment/13cd49c77d265a60a4cdf08d34d5e8f877be106a/docs/index.html" target="_blank">13cd49c</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-02-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -810,10 +843,7 @@ Lifan Liang
 </tr>
 </tbody>
 </table>
-<p><br><br></p>
-<ul>
-<li>Number of peaks called for each cell type at each timepoint</li>
-</ul>
+<p><br><br> * Number of peaks called for each cell type at each timepoint</p>
 <table>
 <thead>
 <tr class="header">
