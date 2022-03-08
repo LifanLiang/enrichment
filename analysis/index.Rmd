@@ -58,7 +58,6 @@ peak.counts.bonf25 <- read.table("data/peak_counts/FDR0.25.txt", header=T)
 knitr::kable(peak.counts.bonf25[,c("bed","peak")])
 ```
 <br><br>
-
 * Number of peaks called for each cell type at each timepoint
 ```{r table_12peaks, echo=FALSE}
 peak.counts.12peaks <- read.table("data/peak_counts/12peaks.txt", header=T)

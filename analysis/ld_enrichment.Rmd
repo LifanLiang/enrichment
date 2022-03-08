@@ -31,34 +31,59 @@ plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 }
 ```
 
-```{r , echo=F}
-enrich.ld <- read.table("data/enrich_results/PGC3_diff.results.txt", sep="\t", header=T, row.names=1)
-annot <- c('GABA_1v0hr_ucsc',
- 'GABA_static',
- 'NEFMm_CUX2p_bam_0hr_peaks',
+#### Dynamic elements vs. static elements from pseudo bulk (joint analysis)
+```{r, echo=F}
+enrich.ld <- read.table("data/enrich_results/dynamic_vs_static_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),4:5]
+annot <- c('NmCp_glut_static_psbulk_ucsc',
+ 'GABA_static_psbulk_ucsc',
+ 'NpCm_glut_static_psbulk_ucsc',
+ 'NPC_static_psbulk_ucsc',
+ 'GABA_1v0hr_ucsc',
  'GABA_6v0hr_ucsc',
  'NmCp_glut_1v0hr_ucsc',
- 'NpCm_glut_static',
- 'NEFMp_CUX2m_bam_0hr_peaks',
  'NpCm_glut_6v0hr_ucsc',
  'NPC_6v0hr_ucsc',
  'NpCm_glut_1v0hr_ucsc',
  'NPC_1v0hr_ucsc',
- 'GABA_bam_0hr_peaks',
- 'NPC_bam_0hr_peaks',
- 'NmCp_glut_6v0hr_ucsc',
- 'NmCp_glut_static',
- 'NPC_static')
-row.names(enrich.ld)[(nrow(enrich.ld)-15):nrow(enrich.ld)] <- annot
-temp <- enrich.ld[c(annot,"Coding_UCSCL2_0", "Conserved_LindbladTohL2_0",
-                    "Promoter_UCSCL2_0"), 4:5]
-temp$annotation <- factor(rownames(temp), levels = rownames(temp)[c(17,18,19,15,6,16,2,3,7,13,12,14,5,8,10,9,11,4,1)])
-temp$lower <- temp$Enrichment - 2 * temp$Enrichment_std_error
-temp$upper <- temp$Enrichment + 2 * temp$Enrichment_std_error
+ 'NmCp_glut_6v0hr_ucsc')
+rownames(temp) <- annot
+temp$annotation <- factor(rownames(temp), level=rownames(temp))
+temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
+temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
 plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
+
+<!-- ```{r , echo=F} -->
+<!-- enrich.ld <- read.table("data/enrich_results/PGC3_diff.results.txt", sep="\t", header=T, row.names=1) -->
+<!-- annot <- c('GABA_1v0hr_ucsc', -->
+<!--  'GABA_static', -->
+<!--  'NEFMm_CUX2p_bam_0hr_peaks', -->
+<!--  'GABA_6v0hr_ucsc', -->
+<!--  'NmCp_glut_1v0hr_ucsc', -->
+<!--  'NpCm_glut_static', -->
+<!--  'NEFMp_CUX2m_bam_0hr_peaks', -->
+<!--  'NpCm_glut_6v0hr_ucsc', -->
+<!--  'NPC_6v0hr_ucsc', -->
+<!--  'NpCm_glut_1v0hr_ucsc', -->
+<!--  'NPC_1v0hr_ucsc', -->
+<!--  'GABA_bam_0hr_peaks', -->
+<!--  'NPC_bam_0hr_peaks', -->
+<!--  'NmCp_glut_6v0hr_ucsc', -->
+<!--  'NmCp_glut_static', -->
+<!--  'NPC_static') -->
+<!-- row.names(enrich.ld)[(nrow(enrich.ld)-15):nrow(enrich.ld)] <- annot -->
+<!-- temp <- enrich.ld[c(annot,"Coding_UCSCL2_0", "Conserved_LindbladTohL2_0", -->
+<!--                     "Promoter_UCSCL2_0"), 4:5] -->
+<!-- temp$annotation <- factor(rownames(temp), levels = rownames(temp)[c(17,18,19,15,6,16,2,3,7,13,12,14,5,8,10,9,11,4,1)]) -->
+<!-- temp$lower <- temp$Enrichment - 2 * temp$Enrichment_std_error -->
+<!-- temp$upper <- temp$Enrichment + 2 * temp$Enrichment_std_error -->
+<!-- plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations") -->
+<!-- ``` -->
+
 <br><br>
+#### Dynamic elements vs. static elements from Signac (joint analysis)
 We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks ("static" peaks in the plot), the enrichment is reduced dramatically. 
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/PGC3_diff_smaller.ldsc.results", sep="\t", header=T, row.names=1)
@@ -69,7 +94,17 @@ ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_err
 plot_or(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
+#### Dynamic elements vs. static elements (marginal analysis)
+We run S-LDSC with each annotation one at a time. Baseline model was always included.
+```{r, echo=F}
+ld.smaller <- read.table("data/enrich_results/ldsc_marginal_dynamic_vs_static.tsv", sep=",", header=T, row.names=1)
+ld.smaller$annotation <- factor(row.names(ld.smaller), 
+           levels=rownames(ld.smaller)[c(1,4,5,10,14,11,13,8,16,2,6,12,7,9,3,15)])
+ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
+ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
 
+plot_or(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
 
 
 

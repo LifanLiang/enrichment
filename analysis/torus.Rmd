@@ -25,71 +25,104 @@ plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 }
 ```
 
-
-### Enrichment analysis of FWER<0.25
-
-```{r, echo=F}
-enrich.bonf25 <- read.table("data/enrich_results/bonf25_bothside.tsv", header=T)
-colnames(enrich.bonf25)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.bonf25, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
-```
-
-
-
-After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR < 0.05. 
-
 ### Enrichment of positive control
 
-The baseline used in the last paper was adopted here.
+The baseline used in the last paper was adopted here, including promoter regions, enhancer regions, and conserved regions.
 
 ```{r positive_control, echo=FALSE}
 enrich.pos <- read.table("data/enrich_results/positive_control.tsv", header=T)
+enrich.pos[,2:4] <- enrich.pos[,2:4] * log2(exp(1))
 plot_or(enrich.pos, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
         ylab = "Functional annotations")
 ```
 
 ### Peaks called at specific cell type and time point
-
+There are two approaches to call the peaks. One is called through MACS2-Signac (named "Signac" later for the source. The other is merging samples within the same cell types and the same time point and call peaks with MACS2 (called "pseudo bulk" later). The pseudo bulk peakset has at least twice as much peaks as the Signac peak set across all cell types and time points (refer to the [the peak counts](index.html#summary-for-different-peak-sets)).
 ```{r enrichment_12peaks, echo=FALSE}
 enrich.12peaks <- read.table("data/enrich_results/12peaks.tsv", header=T)
-plot_or(enrich.12peaks, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
+enrich.12peaks[,2:4] <- enrich.12peaks[,2:4] * log2(exp(1))
+plot_or(enrich.12peaks, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+```{r enrichment_pseudo_bulk, echo=FALSE}
+enrich.pseudo <- read.table("data/enrich_results/pseudobluk.tsv", header=T)
+colnames(enrich.pseudo)  = c("annotation", "logOR", "lower", "upper")
+# table <- rbind(enrich.pseudo, enrich.static)
+table <- enrich.pseudo
+table[,2:4] <- table[,2:4] * log2(exp(1))
+table$annotation <- factor(table$annotation, levels=table$annotation)
+plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+### Enrichment analysis of FWER<0.25
+The number of peaks selected with Bonferroni q values are too small even with 0.25 cutoff.
+```{r, echo=F}
+enrich.bonf25 <- read.table("data/enrich_results/bonf25_bothside.tsv", header=T)
+colnames(enrich.bonf25)  = c("annotation", "logOR", "lower", "upper")
+plot_or(enrich.bonf25, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
 ### DAP at FDR<0.05
+After recomputing FDR with BH procedure, differentially accessibility peaks (DAP) were selected at FDR < 0.05. The number of peaks are much larger than FWER peak sets (refer to [the peak counts](index.html#summary-for-different-peak-sets)).
+
 ```{r enrichment_DAP_bothside, echo=FALSE}
 enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
 colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')),
-        ylab = "Functional annotations")
+enrich.dap[,2:4] <- enrich.dap[,2:4] * log2(exp(1))
+plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
-### Inducible elements
-```{r enrichment_DAP_positive, echo=FALSE}
-enrich.dap.pos <- read.table("data/enrich_results/FDR5_positive.tsv", header=T)
-colnames(enrich.dap.pos)  = c("annotation", "logOR", "lower", "upper")
-plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
-```
+<!-- ### Inducible elements -->
+<!-- ```{r enrichment_DAP_positive, echo=FALSE} -->
+<!-- enrich.dap.pos <- read.table("data/enrich_results/FDR5_positive.tsv", header=T) -->
+<!-- colnames(enrich.dap.pos)  = c("annotation", "logOR", "lower", "upper") -->
+<!-- plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations") -->
+<!-- ``` -->
 
-### DAP with non_inducible elements
-```{r enrichment_with_baseline, echo=FALSE}
+#### DAP vs. static elements from Signac (marginal analysis)
+We remove peaks in the resting condition (0 hr) peak sets that overlap with the differential peaks from the corresponding cell type.
+
+```{r enrichment_vs_signac, echo=FALSE}
 enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
 colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
 enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
 colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
 table <- rbind(enrich.dap, enrich.static)
+table[,2:4] <- table[,2:4] * log2(exp(1))
 plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
-### Pseudo bulk peak sets
-Since Siwei provide an updated another peak sets called from pseudo bulk approach, we rerun enrichment analysis. And the results are similar with the previous peak set, though the number of peaks are much bigger (refers to the summary statics page). The non-inducible part of the peaks ("static" in the plot) also dropped performance.
-```{r enrichment_pseudo_bulk, echo=FALSE}
-enrich.pseudo <- read.table("data/enrich_results/pseudobluk.tsv", header=T)
-colnames(enrich.pseudo)  = c("annotation", "logOR", "lower", "upper")
-enrich.static <- read.table("data/enrich_results/static_bothside.tsv", header=T)
-colnames(enrich.static)  = c("annotation", "logOR", "lower", "upper")
-table <- rbind(enrich.pseudo, enrich.static)
+#### DAP vs. static elements from Signac (joint analysis)
+```{r enrichment_vs_signac_joint, echo=FALSE}
+enrich.joint <- read.table("data/joint_dynamic/joint_dynamic_vs_static.tsv", header=T)
+colnames(enrich.joint)  = c("annotation", "logOR", "lower", "upper")
+table <- enrich.joint[-c(1,4,10,11),]
+table[,2:4] <- table[,2:4] * log2(exp(1))
+table$annotation <- factor(table$annotation, levels=table$annotation)
+plot_or(table, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+
+#### DAP vs. static elements from pseudo bulk (marginal analysis)
+```{r enrichment_vs_pseudobulk, echo=FALSE}
+enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
+colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
+enrich.static.pseu <- read.table("data/enrich_results/static_bothside.tsv", header=T)
+colnames(enrich.static.pseu)  = c("annotation", "logOR", "lower", "upper")
+table <- rbind(enrich.dap, enrich.static.pseu)
+table[,2:4] <- table[,2:4] * log2(exp(1))
 table$annotation <- factor(table$annotation, levels=table$annotation)
 plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+```
+
+#### DAP vs. static elements from pseudo bulk (joint analysis)
+Comparison with pseudo bulk in joint analysis show different results. This is probably because the differential peaks were not derived from the pseudo bulk approach. Additional peaks gained from this approach have not been eliminated.
+
+```{r enrichment_vs_pseudobulk_joint, echo=FALSE}
+enrich.joint.pseu <- read.table("data/joint_dynamic/joint_dynamic_vs_static_pseudobulk.tsv", header=T)
+colnames(enrich.joint.pseu)  = c("annotation", "logOR", "lower", "upper")
+table <- enrich.joint.pseu[-c(1,4,10,11),]
+table[,2:4] <- table[,2:4] * log2(exp(1))
+table$annotation <- factor(table$annotation, levels=table$annotation)
+plot_or(table, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
