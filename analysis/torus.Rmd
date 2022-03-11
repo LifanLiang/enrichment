@@ -79,7 +79,7 @@ plot_or(enrich.dap[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichme
 <!-- plot_or(enrich.dap.pos[-(5:6),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations") -->
 <!-- ``` -->
 
-#### DAP vs. static elements from Signac (marginal analysis)
+#### Dynamic vs. static elements from Signac (marginal analysis)
 We remove peaks in the resting condition (0 hr) peak sets that overlap with the differential peaks from the corresponding cell type.
 
 ```{r enrichment_vs_signac, echo=FALSE}
@@ -92,7 +92,7 @@ table[,2:4] <- table[,2:4] * log2(exp(1))
 plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
-#### DAP vs. static elements from Signac (joint analysis)
+#### Dynamic vs. static elements from Signac (joint analysis)
 ```{r enrichment_vs_signac_joint, echo=FALSE}
 enrich.joint <- read.table("data/joint_dynamic/joint_dynamic_vs_static.tsv", header=T)
 colnames(enrich.joint)  = c("annotation", "logOR", "lower", "upper")
@@ -103,25 +103,25 @@ plot_or(table, "", xlab = expression(paste(log[2], ' fold enrichment of SZ varia
 ```
 
 
-#### DAP vs. static elements from pseudo bulk (marginal analysis)
+#### Dynamic vs. static elements from pseudo bulk (marginal analysis)
 ```{r enrichment_vs_pseudobulk, echo=FALSE}
-enrich.dap <- read.table("data/enrich_results/FDR5_bothside.tsv", header=T)
+enrich.dap <- read.table("data/enrich_results/marginal_pseudobulk_dynamic_vs_static.tsv", header=T)
 colnames(enrich.dap)  = c("annotation", "logOR", "lower", "upper")
-enrich.static.pseu <- read.table("data/enrich_results/static_bothside.tsv", header=T)
-colnames(enrich.static.pseu)  = c("annotation", "logOR", "lower", "upper")
-table <- rbind(enrich.dap, enrich.static.pseu)
+# enrich.static.pseu <- read.table("data/enrich_results/static_bothside.tsv", header=T)
+# colnames(enrich.static.pseu)  = c("annotation", "logOR", "lower", "upper")
+table <- enrich.dap[-c(3,8,12),]
 table[,2:4] <- table[,2:4] * log2(exp(1))
 table$annotation <- factor(table$annotation, levels=table$annotation)
-plot_or(table[-c(5,6,11),], "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
+plot_or(table, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")
 ```
 
-#### DAP vs. static elements from pseudo bulk (joint analysis)
+#### Dynamic vs. static elements from pseudo bulk (joint analysis)
 Comparison with pseudo bulk in joint analysis show different results. This is probably because the differential peaks were not derived from the pseudo bulk approach. Additional peaks gained from this approach have not been eliminated.
 
 ```{r enrichment_vs_pseudobulk_joint, echo=FALSE}
-enrich.joint.pseu <- read.table("data/joint_dynamic/joint_dynamic_vs_static_pseudobulk.tsv", header=T)
+enrich.joint.pseu <- read.table("data/enrich_results/joint_pseudobulk_dynvs_stat.tsv", header=T)
 colnames(enrich.joint.pseu)  = c("annotation", "logOR", "lower", "upper")
-table <- enrich.joint.pseu[-c(1,4,10,11),]
+table <- enrich.joint.pseu[-c(1),]
 table[,2:4] <- table[,2:4] * log2(exp(1))
 table$annotation <- factor(table$annotation, levels=table$annotation)
 plot_or(table, "", xlab = expression(paste(log[2], ' fold enrichment of SZ variants')), ylab = "Functional annotations")

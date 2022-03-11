@@ -1,0 +1,11 @@
+"term" "estimate" "low" "high"
+"1" "Intercept" -8.93 -8.95 -8.909
+"2" "GABA_static.bed.1" 0.49 -0.1 1.08
+"3" "NmCp_glut_static.bed.1" 1.773 1.026 2.52
+"4" "NpCm_glut_static.bed.1" -0.099 -0.812 0.615
+"5" "DA_540k_1vs0_GABA_annotated.tsv.1" 0.432 -0.507 1.371
+"6" "DA_540k_1vs0_NEFMm_annotated.tsv.1" -0.707 -1.913 0.5
+"7" "DA_540k_1vs0_NEFMp_annotated.tsv.1" 0.394 -0.23 1.019
+"8" "DA_540k_6vs0_GABA_annotated.tsv.1" 0.64 -0.103 1.382
+"9" "DA_540k_6vs0_NEFMm_annotated.tsv.1" 0.692 -0.128 1.512
+"10" "DA_540k_6vs0_NEFMp_annotated.tsv.1" 1.095 0.485 1.705

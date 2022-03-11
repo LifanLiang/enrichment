@@ -33,22 +33,29 @@ plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 
 #### Dynamic elements vs. static elements from pseudo bulk (joint analysis)
 ```{r, echo=F}
-enrich.ld <- read.table("data/enrich_results/dynamic_vs_static_joint.results", sep="\t", header=T, row.names=1)
-temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),4:5]
-annot <- c('NmCp_glut_static_psbulk_ucsc',
- 'GABA_static_psbulk_ucsc',
- 'NpCm_glut_static_psbulk_ucsc',
- 'NPC_static_psbulk_ucsc',
- 'GABA_1v0hr_ucsc',
- 'GABA_6v0hr_ucsc',
- 'NmCp_glut_1v0hr_ucsc',
- 'NpCm_glut_6v0hr_ucsc',
- 'NPC_6v0hr_ucsc',
- 'NpCm_glut_1v0hr_ucsc',
- 'NPC_1v0hr_ucsc',
- 'NmCp_glut_6v0hr_ucsc')
+enrich.ld <- read.table("data/enrich_results/pseudobulk_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),4:5]
+annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
+ 'DA_540k_6vs0_GABA_annotated_ucsc.',
+ 'DA_540k_1vs0_GABA_annotated_ucsc.',
+ 'DA_540k_6vs0_NEFMp_annotated_ucsc.',
+ 'NpCm_glut_static_ucsc.',
+ 'DA_540k_6vs0_NEFMm_annotated_ucsc.',
+ 'NmCp_glut_static_ucsc.',
+ 'GABA_static_ucsc.',
+ 'DA_540k_1vs0_NEFMm_annotated_ucsc.')
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp))
+temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
+temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
+plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
+
+#### Dynamic elements vs. static elements from pseudo bulk (marginal analysis)
+```{r, echo=F}
+enrich.ld <- read.table("data/enrich_results/pseudobulk_dyn_vs_stat_marg_total.tsv", sep=",", header=T, row.names=1)
+temp <- enrich.ld
+temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(1,2,5,4,8,3,9,6,7)])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
 temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
 plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
