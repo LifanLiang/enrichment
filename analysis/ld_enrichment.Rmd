@@ -16,15 +16,25 @@ editor_options:
 * LD score was computed using 1000G panel and the same list of SNPs as the baseline's
 
 ### Enrichment analysis
-The annotation includes differential peaks (1v0hr and 6v0hr bothside of fold change), resting condition peaks called directly through MACS2 by merging cells within the same cell type and time point, and "static" peaks that remains in resting condition after removing the differential peaks.
+The annotation includes differential peaks (1v0hr and 6v0hr bothside of fold change), resting condition peaks called directly through MACS2 by merging cells within the same cell type and time point, and "static" peaks that remains in resting condition after removing the differential peaks.<\br>
+Please note that enrichment estimate in S-LDSC is the proportion of heritability ($h^2$) devided by the proportion of causal SNPs. In "Comparison of heritability", we only showed $h^2$.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(rtracklayer)
 
-plot_or = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+plot_enrichment = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
   p1 <- ggplot(dat, aes(y=annotation)) + 
     geom_point(aes(x=Enrichment), colour="#800000") + #plot OR
+    geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
+  p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
+  p1
+}
+
+
+plot_h2 = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+  p1 <- ggplot(dat, aes(y=annotation)) + 
+    geom_point(aes(x=Prop._h2), colour="#800000") + #plot OR
     geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
   p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
   p1
@@ -45,10 +55,31 @@ annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
  'GABA_static_ucsc.',
  'DA_540k_1vs0_NEFMm_annotated_ucsc.')
 rownames(temp) <- annot
-temp$annotation <- factor(rownames(temp), level=rownames(temp))
+temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(8,7,5,3,2,9,6,1,4)])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
 temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
-plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
+
+#### Comparison of heritability in pseudo bulk (joint analysis)
+```{r, echo=F}
+enrich.ld <- read.table("data/enrich_results/pseudobulk_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
+annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
+ 'DA_540k_6vs0_GABA_annotated_ucsc.',
+ 'DA_540k_1vs0_GABA_annotated_ucsc.',
+ 'DA_540k_6vs0_NEFMp_annotated_ucsc.',
+ 'NpCm_glut_static_ucsc.',
+ 'DA_540k_6vs0_NEFMm_annotated_ucsc.',
+ 'NmCp_glut_static_ucsc.',
+ 'GABA_static_ucsc.',
+ 'DA_540k_1vs0_NEFMm_annotated_ucsc.')
+rownames(temp) <- annot
+temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(8,7,5,3,2,9,6,1,4)])
+temp$Prop._h2 <- 100 * temp$Prop._h2
+temp$lower <- temp$Prop._h2 - 196 * temp$Prop._h2_std_error
+temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
+plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
 #### Dynamic elements vs. static elements from pseudo bulk (marginal analysis)
@@ -58,7 +89,7 @@ temp <- enrich.ld
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(1,2,5,4,8,3,9,6,7)])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
 temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
-plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
 
@@ -89,28 +120,62 @@ plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotat
 <!-- plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations") -->
 <!-- ``` -->
 
-<br><br>
+
 #### Dynamic elements vs. static elements from Signac (joint analysis)
 We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks ("static" peaks in the plot), the enrichment is reduced dramatically. 
 ```{r, echo=F}
-ld.smaller <- read.table("data/enrich_results/PGC3_diff_smaller.ldsc.results", sep="\t", header=T, row.names=1)
+ld.smaller <- read.table("data/enrich_results/Signac_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+ld.smaller <- ld.smaller[(nrow(ld.smaller)-8):nrow(ld.smaller),]
+rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
+ 'smaller_NpCm_glut_static_ucsc',
+ 'smaller_GABA_static_ucsc',
+ 'GABA_1v0hr_ucsc',
+ 'GABA_6v0hr_ucsc',
+ 'NmCp_glut_1v0hr_ucsc',
+ 'NpCm_glut_6v0hr_ucsc',
+ 'NpCm_glut_1v0hr_ucsc',
+ 'NmCp_glut_6v0hr_ucsc')
 ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
 ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
 ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
 
-plot_or(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+plot_enrichment(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements (marginal analysis)
+
+```{r, echo=F}
+ld.smaller <- read.table("data/enrich_results/Signac_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+ld.smaller <- ld.smaller[(nrow(ld.smaller)-8):nrow(ld.smaller),]
+rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
+ 'smaller_NpCm_glut_static_ucsc',
+ 'smaller_GABA_static_ucsc',
+ 'GABA_1v0hr_ucsc',
+ 'GABA_6v0hr_ucsc',
+ 'NmCp_glut_1v0hr_ucsc',
+ 'NpCm_glut_6v0hr_ucsc',
+ 'NpCm_glut_1v0hr_ucsc',
+ 'NmCp_glut_6v0hr_ucsc')
+ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
+ld.smaller$Prop._h2 <- 100 * ld.smaller$Prop._h2
+ld.smaller$lower <- ld.smaller$Prop._h2 - 196 * ld.smaller$Prop._h2_std_error
+ld.smaller$upper <- ld.smaller$Prop._h2 + 196 * ld.smaller$Prop._h2_std_error
+
+plot_h2(ld.smaller, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
+```
+
+
+#### Dynamic elements vs. static elements from Signac (marginal analysis)
 We run S-LDSC with each annotation one at a time. Baseline model was always included.
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/ldsc_marginal_dynamic_vs_static.tsv", sep=",", header=T, row.names=1)
+ld.smaller <- ld.smaller[-grep("psbulk", rownames(ld.smaller)),]
+ld.smaller <- ld.smaller[-grep("NPC", rownames(ld.smaller)),]
 ld.smaller$annotation <- factor(row.names(ld.smaller), 
-           levels=rownames(ld.smaller)[c(1,4,5,10,14,11,13,8,16,2,6,12,7,9,3,15)])
+           levels=rownames(ld.smaller)[c(9,2,8,4,5,6,1,3,7)])
 ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
 ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
 
-plot_or(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+plot_enrichment(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
 
