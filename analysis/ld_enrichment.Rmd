@@ -135,7 +135,7 @@ rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
  'NpCm_glut_6v0hr_ucsc',
  'NpCm_glut_1v0hr_ucsc',
  'NmCp_glut_6v0hr_ucsc')
-ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
+ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)[c(1:6,9,8,7)]))
 ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
 ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
 
