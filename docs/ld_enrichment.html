@@ -381,7 +381,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-14
+<strong>Last updated:</strong> 2022-03-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -472,16 +472,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreeeb9aa791ccfe17616daad724af49eeb81257022ftargetblankeb9aa79a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/eb9aa791ccfe17616daad724af49eeb81257022f" target="_blank">eb9aa79</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree6fd50c1666bf41ae24dd52faa6b11d437acf12bftargetblank6fd50c1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/LifanLiang/enrichment/tree/6fd50c1666bf41ae24dd52faa6b11d437acf12bf" target="_blank">6fd50c1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttreeeb9aa791ccfe17616daad724af49eeb81257022ftargetblankeb9aa79a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomLifanLiangenrichmenttree6fd50c1666bf41ae24dd52faa6b11d437acf12bftargetblank6fd50c1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/eb9aa791ccfe17616daad724af49eeb81257022f" target="_blank">eb9aa79</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/LifanLiang/enrichment/tree/6fd50c1666bf41ae24dd52faa6b11d437acf12bf" target="_blank">6fd50c1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -495,7 +495,6 @@ Ignored files:
     Ignored:    data/enrich_results/.DS_Store
 
 Untracked files:
-    Untracked:  data/enrich_results/Signac_dyn_vs_stat_joint.results
     Untracked:  dynamic_vs_static_marginal.tsv
 
 </code></pre>
@@ -535,6 +534,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/6fd50c1666bf41ae24dd52faa6b11d437acf12bf/analysis/ld_enrichment.Rmd" target="_blank">6fd50c1</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-03-18
+</td>
+<td>
+wflow_publish(c("analysis", "data"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LifanLiang/enrichment/abe61f0b1cc04f45fcbb8ec9f2eb640b0cb14338/docs/ld_enrichment.html" target="_blank">abe61f0</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-03-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -771,8 +804,8 @@ data
 <li>LD score was computed using 1000G panel and the same list of SNPs as the baseline’s</li>
 </ul>
 </div>
-<div id="enrichment-analysis" class="section level3">
-<h3>Enrichment analysis</h3>
+<div id="enrichment-analysis-for-pseudo-bulk-peak-sets" class="section level3">
+<h3>Enrichment analysis for pseudo bulk peak sets</h3>
 <p>The annotation includes differential peaks (1v0hr and 6v0hr bothside of fold change), resting condition peaks called directly through MACS2 by merging cells within the same cell type and time point, and “static” peaks that remains in resting condition after removing the differential peaks.&lt;&gt; Please note that enrichment estimate in S-LDSC is the proportion of heritability (<span class="math inline">\(h^2\)</span>) devided by the proportion of causal SNPs. In “Comparison of heritability”, we only showed <span class="math inline">\(h^2\)</span>.</p>
 <div id="dynamic-elements-vs.-static-elements-from-pseudo-bulk-joint-analysis" class="section level4">
 <h4>Dynamic elements vs. static elements from pseudo bulk (joint analysis)</h4>
@@ -984,36 +1017,10 @@ Lifan Liang
 </table>
 </div>
 </div>
-<!-- ```{r , echo=F} -->
-<!-- enrich.ld <- read.table("data/enrich_results/PGC3_diff.results.txt", sep="\t", header=T, row.names=1) -->
-<!-- annot <- c('GABA_1v0hr_ucsc', -->
-<!--  'GABA_static', -->
-<!--  'NEFMm_CUX2p_bam_0hr_peaks', -->
-<!--  'GABA_6v0hr_ucsc', -->
-<!--  'NmCp_glut_1v0hr_ucsc', -->
-<!--  'NpCm_glut_static', -->
-<!--  'NEFMp_CUX2m_bam_0hr_peaks', -->
-<!--  'NpCm_glut_6v0hr_ucsc', -->
-<!--  'NPC_6v0hr_ucsc', -->
-<!--  'NpCm_glut_1v0hr_ucsc', -->
-<!--  'NPC_1v0hr_ucsc', -->
-<!--  'GABA_bam_0hr_peaks', -->
-<!--  'NPC_bam_0hr_peaks', -->
-<!--  'NmCp_glut_6v0hr_ucsc', -->
-<!--  'NmCp_glut_static', -->
-<!--  'NPC_static') -->
-<!-- row.names(enrich.ld)[(nrow(enrich.ld)-15):nrow(enrich.ld)] <- annot -->
-<!-- temp <- enrich.ld[c(annot,"Coding_UCSCL2_0", "Conserved_LindbladTohL2_0", -->
-<!--                     "Promoter_UCSCL2_0"), 4:5] -->
-<!-- temp$annotation <- factor(rownames(temp), levels = rownames(temp)[c(17,18,19,15,6,16,2,3,7,13,12,14,5,8,10,9,11,4,1)]) -->
-<!-- temp$lower <- temp$Enrichment - 2 * temp$Enrichment_std_error -->
-<!-- temp$upper <- temp$Enrichment + 2 * temp$Enrichment_std_error -->
-<!-- plot_or(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations") -->
-<!-- ``` -->
 </div>
-<div id="dynamic-elements-vs.-static-elements-from-signac-joint-analysis" class="section level4">
-<h4>Dynamic elements vs. static elements from Signac (joint analysis)</h4>
-<p>We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks (“static” peaks in the plot), the enrichment is reduced dramatically. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="diverse-diseases-joint-analysis" class="section level4">
+<h4>Diverse diseases (joint analysis)</h4>
+<p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
 Past versions of unnamed-chunk-4-1.png
@@ -1036,6 +1043,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/LifanLiang/enrichment/blob/abe61f0b1cc04f45fcbb8ec9f2eb640b0cb14338/docs/figure/ld_enrichment.Rmd/unnamed-chunk-4-1.png" target="_blank">abe61f0</a>
+</td>
+<td>
+Lifan Liang
+</td>
+<td>
+2022-03-14
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/LifanLiang/enrichment/blob/5676b96e9df6be28e2e57f38866961c3e5abafcc/docs/figure/ld_enrichment.Rmd/unnamed-chunk-4-1.png" target="_blank">5676b96</a>
@@ -1062,6 +1080,9 @@ Lifan Liang
 </table>
 </div>
 </div>
+</div>
+<div id="enrichment-analysis-applied-to-various-diseases" class="section level4">
+<h4>Enrichment analysis applied to various diseases</h4>
 <p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
@@ -1100,10 +1121,18 @@ Lifan Liang
 </table>
 </div>
 </div>
+<pre><code>$title
+[1] &quot;S-LDSC enrichment analysis&quot;
+
+attr(,&quot;class&quot;)
+[1] &quot;labels&quot;</code></pre>
 </div>
-<div id="dynamic-elements-vs.-static-elements-from-signac-marginal-analysis" class="section level4">
-<h4>Dynamic elements vs. static elements from Signac (marginal analysis)</h4>
-<p>We run S-LDSC with each annotation one at a time. Baseline model was always included. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="enrichment-analysis-for-signac-peak-sets" class="section level3">
+<h3>Enrichment analysis for Signac peak sets</h3>
+<div id="dynamic-elements-vs.-static-elements-joint-analysis" class="section level4">
+<h4>Dynamic elements vs. static elements (joint analysis)</h4>
+<p>We rerun stratified LD score regression with a smaller peak sets of resting condition (0hr). 0hr peaks are called through MACS2-signac. The number of peaks are much smaller. 0hr peaks are more enriched than the differential peaks. Still, when the differential elements were removed from 0hr peaks (“static” peaks in the plot), the enrichment is reduced dramatically. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
 Past versions of unnamed-chunk-6-1.png
@@ -1141,6 +1170,27 @@ Lifan Liang
 </table>
 </div>
 </div>
+</div>
+<div id="comparison-of-heritability-of-peak-sets-joint-analysis" class="section level4">
+<h4>Comparison of heritability of peak sets (joint analysis)</h4>
+<p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="dynamic-elements-vs.-static-elements-marginal-analysis" class="section level4">
+<h4>Dynamic elements vs. static elements (marginal analysis)</h4>
+<p>We run S-LDSC with each annotation one at a time. Baseline model was always included. <img src="figure/ld_enrichment.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="applying-to-diverse-diseases-joint-analysis" class="section level3">
+<h3>Applying to diverse diseases (joint analysis)</h3>
+<p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="enrichment-analysis-applied-to-various-diseases-1" class="section level4">
+<h4>Enrichment analysis applied to various diseases</h4>
+<p><img src="figure/ld_enrichment.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>$title
+[1] &quot;S-LDSC enrichment analysis&quot;
+
+attr(,&quot;class&quot;)
+[1] &quot;labels&quot;</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1161,54 +1211,26 @@ locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 attached base packages:
-[1] stats4    stats     graphics  grDevices utils     datasets  methods  
-[8] base     
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] rtracklayer_1.54.0   GenomicRanges_1.46.1 GenomeInfoDb_1.30.1 
-[4] IRanges_2.28.0       S4Vectors_0.32.3     BiocGenerics_0.40.0 
-[7] ggplot2_3.3.5        workflowr_1.7.0     
+[1] ggplot2_3.3.5   workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.8                  lattice_0.20-45            
- [3] getPass_0.2-2               Rsamtools_2.10.0           
- [5] ps_1.6.0                    Biostrings_2.62.0          
- [7] assertthat_0.2.1            rprojroot_2.0.2            
- [9] digest_0.6.29               utf8_1.2.2                 
-[11] R6_2.5.1                    evaluate_0.14              
-[13] highr_0.9                   httr_1.4.2                 
-[15] pillar_1.7.0                zlibbioc_1.40.0            
-[17] rlang_1.0.0                 rstudioapi_0.13            
-[19] whisker_0.4                 callr_3.7.0                
-[21] jquerylib_0.1.4             Matrix_1.3-4               
-[23] rmarkdown_2.11              labeling_0.4.2             
-[25] BiocParallel_1.28.3         stringr_1.4.0              
-[27] RCurl_1.98-1.6              munsell_0.5.0              
-[29] DelayedArray_0.20.0         compiler_4.1.2             
-[31] httpuv_1.6.5                xfun_0.29                  
-[33] pkgconfig_2.0.3             htmltools_0.5.2            
-[35] SummarizedExperiment_1.24.0 tidyselect_1.1.1           
-[37] tibble_3.1.6                GenomeInfoDbData_1.2.7     
-[39] matrixStats_0.61.0          XML_3.99-0.8               
-[41] fansi_1.0.2                 crayon_1.4.2               
-[43] dplyr_1.0.7                 withr_2.4.3                
-[45] later_1.3.0                 GenomicAlignments_1.30.0   
-[47] bitops_1.0-7                grid_4.1.2                 
-[49] gtable_0.3.0                lifecycle_1.0.1            
-[51] DBI_1.1.2                   git2r_0.29.0               
-[53] magrittr_2.0.2              scales_1.1.1               
-[55] cli_3.1.1                   stringi_1.7.6              
-[57] farver_2.1.0                XVector_0.34.0             
-[59] fs_1.5.2                    promises_1.2.0.1           
-[61] ellipsis_0.3.2              generics_0.1.2             
-[63] vctrs_0.3.8                 rjson_0.2.21               
-[65] restfulr_0.0.13             tools_4.1.2                
-[67] Biobase_2.54.0              glue_1.6.1                 
-[69] purrr_0.3.4                 MatrixGenerics_1.6.0       
-[71] parallel_4.1.2              processx_3.5.2             
-[73] fastmap_1.1.0               yaml_2.2.2                 
-[75] colorspace_2.0-2            knitr_1.37                 
-[77] BiocIO_1.4.0               </code></pre>
+ [1] tidyselect_1.1.1 xfun_0.29        purrr_0.3.4      colorspace_2.0-2
+ [5] vctrs_0.3.8      generics_0.1.2   htmltools_0.5.2  yaml_2.2.2      
+ [9] utf8_1.2.2       rlang_1.0.0      jquerylib_0.1.4  later_1.3.0     
+[13] pillar_1.7.0     glue_1.6.1       withr_2.4.3      DBI_1.1.2       
+[17] lifecycle_1.0.1  stringr_1.4.0    munsell_0.5.0    gtable_0.3.0    
+[21] evaluate_0.14    labeling_0.4.2   knitr_1.37       callr_3.7.0     
+[25] fastmap_1.1.0    httpuv_1.6.5     ps_1.6.0         fansi_1.0.2     
+[29] highr_0.9        Rcpp_1.0.8       promises_1.2.0.1 scales_1.1.1    
+[33] farver_2.1.0     fs_1.5.2         digest_0.6.29    stringi_1.7.6   
+[37] processx_3.5.2   dplyr_1.0.7      getPass_0.2-2    rprojroot_2.0.2 
+[41] grid_4.1.2       cli_3.1.1        tools_4.1.2      magrittr_2.0.2  
+[45] tibble_3.1.6     crayon_1.4.2     whisker_0.4      pkgconfig_2.0.3 
+[49] ellipsis_0.3.2   assertthat_0.2.1 rmarkdown_2.11   httr_1.4.2      
+[53] rstudioapi_0.13  R6_2.5.1         git2r_0.29.0     compiler_4.1.2  </code></pre>
 </div>
 </div>
 </div>
