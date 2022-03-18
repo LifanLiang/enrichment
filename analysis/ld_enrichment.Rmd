@@ -45,15 +45,15 @@ plot_h2 = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 ```{r, echo=F}
 enrich.ld <- read.table("data/enrich_results/pseudobulk_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),4:5]
-annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
- 'DA_540k_6vs0_GABA_annotated_ucsc.',
- 'DA_540k_1vs0_GABA_annotated_ucsc.',
- 'DA_540k_6vs0_NEFMp_annotated_ucsc.',
- 'NpCm_glut_static_ucsc.',
- 'DA_540k_6vs0_NEFMm_annotated_ucsc.',
- 'NmCp_glut_static_ucsc.',
- 'GABA_static_ucsc.',
- 'DA_540k_1vs0_NEFMm_annotated_ucsc.')
+annot <- c('1vs0_NEFMp',
+ '6vs0_GABA',
+ '1vs0_GABA',
+ '6vs0_NEFMp',
+ 'NpCm_glut_static',
+ '6vs0_NEFMm',
+ 'NmCp_glut_static',
+ 'GABA_static',
+ '1vs0_NEFMm')
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(8,7,5,3,2,9,6,1,4)])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
@@ -65,15 +65,15 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 ```{r, echo=F}
 enrich.ld <- read.table("data/enrich_results/pseudobulk_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
-annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
- 'DA_540k_6vs0_GABA_annotated_ucsc.',
- 'DA_540k_1vs0_GABA_annotated_ucsc.',
- 'DA_540k_6vs0_NEFMp_annotated_ucsc.',
- 'NpCm_glut_static_ucsc.',
- 'DA_540k_6vs0_NEFMm_annotated_ucsc.',
- 'NmCp_glut_static_ucsc.',
- 'GABA_static_ucsc.',
- 'DA_540k_1vs0_NEFMm_annotated_ucsc.')
+annot <- c('1vs0_NEFMp',
+ '6vs0_GABA',
+ '1vs0_GABA',
+ '6vs0_NEFMp',
+ 'NpCm_glut_static',
+ '6vs0_NEFMm',
+ 'NmCp_glut_static',
+ 'GABA_static',
+ '1vs0_NEFMm')
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(8,7,5,3,2,9,6,1,4)])
 temp$Prop._h2 <- 100 * temp$Prop._h2
@@ -100,15 +100,15 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 ```{r, echo=F}
 enrich.ld <- read.table("data/enrich_results/various_ldsc_joint/intelligence_pseudobulk_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
-annot <- c('DA_540k_1vs0_NEFMp_annotated_ucsc.',
- 'DA_540k_6vs0_GABA_annotated_ucsc.',
- 'DA_540k_1vs0_GABA_annotated_ucsc.',
- 'DA_540k_6vs0_NEFMp_annotated_ucsc.',
- 'NpCm_glut_static_ucsc.',
- 'DA_540k_6vs0_NEFMm_annotated_ucsc.',
- 'NmCp_glut_static_ucsc.',
- 'GABA_static_ucsc.',
- 'DA_540k_1vs0_NEFMm_annotated_ucsc.')
+annot <- c('1vs0_NEFMp',
+ '6vs0_GABA',
+ '1vs0_GABA',
+ '6vs0_NEFMp',
+ 'NpCm_glut_static',
+ '6vs0_NEFMm',
+ 'NmCp_glut_static',
+ 'GABA_static',
+ '1vs0_NEFMm')
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[c(8,7,5,3,2,9,6,1,4)])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
@@ -126,15 +126,15 @@ aggr <- list()
 for(i in seq_along(res.dir)) {
   enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
   temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
-  annot <- c('DA_540k_1vs0_NEFMp',
- 'DA_540k_6vs0_GABA',
- 'DA_540k_1vs0_GABA',
- 'DA_540k_6vs0_NEFMp',
+  annot <- c('1vs0_NEFMp',
+ '6vs0_GABA',
+ '1vs0_GABA',
+ '6vs0_NEFMp',
  'NpCm_glut_static',
- 'DA_540k_6vs0_NEFMm',
+ '6vs0_NEFMm',
  'NmCp_glut_static',
  'GABA_static',
- 'DA_540k_1vs0_NEFMm')
+ '1vs0_NEFMm')
   rownames(temp) <- annot
   aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
 }
@@ -165,15 +165,15 @@ We rerun stratified LD score regression with a smaller peak sets of resting cond
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/Signac_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 ld.smaller <- ld.smaller[(nrow(ld.smaller)-8):nrow(ld.smaller),]
-rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
- 'smaller_NpCm_glut_static_ucsc',
- 'smaller_GABA_static_ucsc',
- 'GABA_1v0hr_ucsc',
- 'GABA_6v0hr_ucsc',
- 'NmCp_glut_1v0hr_ucsc',
- 'NpCm_glut_6v0hr_ucsc',
- 'NpCm_glut_1v0hr_ucsc',
- 'NmCp_glut_6v0hr_ucsc')
+rownames(ld.smaller) <- c('NmCp_glut_static',
+ 'NpCm_glut_static',
+ 'GABA_static',
+ 'GABA_1v0hr',
+ 'GABA_6v0hr',
+ 'NmCp_glut_1v0hr',
+ 'NpCm_glut_6v0hr',
+ 'NpCm_glut_1v0hr',
+ 'NmCp_glut_6v0hr')
 ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)[c(1:6,9,8,7)]))
 ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
 ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
@@ -185,15 +185,15 @@ plot_enrichment(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Func
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/Signac_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 ld.smaller <- ld.smaller[(nrow(ld.smaller)-8):nrow(ld.smaller),]
-rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
- 'smaller_NpCm_glut_static_ucsc',
- 'smaller_GABA_static_ucsc',
- 'GABA_1v0hr_ucsc',
- 'GABA_6v0hr_ucsc',
- 'NmCp_glut_1v0hr_ucsc',
- 'NpCm_glut_6v0hr_ucsc',
- 'NpCm_glut_1v0hr_ucsc',
- 'NmCp_glut_6v0hr_ucsc')
+rownames(ld.smaller) <- c('NmCp_glut_static',
+ 'NpCm_glut_static',
+ 'GABA_static',
+ 'GABA_1v0hr',
+ 'GABA_6v0hr',
+ 'NmCp_glut_1v0hr',
+ 'NpCm_glut_6v0hr',
+ 'NpCm_glut_1v0hr',
+ 'NmCp_glut_6v0hr')
 ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)))
 ld.smaller$Prop._h2 <- 100 * ld.smaller$Prop._h2
 ld.smaller$lower <- ld.smaller$Prop._h2 - 196 * ld.smaller$Prop._h2_std_error
@@ -223,15 +223,15 @@ plot_enrichment(ld.smaller, "", xlab = 'enrichment of SZ variants', ylab = "Func
 ```{r, echo=F}
 ld.smaller <- read.table("data/enrich_results/various_ldsc_joint/neuroticism_Signac_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 ld.smaller <- ld.smaller[(nrow(ld.smaller)-8):nrow(ld.smaller),]
-rownames(ld.smaller) <- c('smaller_NmCp_glut_static_ucsc',
- 'smaller_NpCm_glut_static_ucsc',
- 'smaller_GABA_static_ucsc',
- 'GABA_1v0hr_ucsc',
- 'GABA_6v0hr_ucsc',
- 'NmCp_glut_1v0hr_ucsc',
- 'NpCm_glut_6v0hr_ucsc',
- 'NpCm_glut_1v0hr_ucsc',
- 'NmCp_glut_6v0hr_ucsc')
+rownames(ld.smaller) <- c('NmCp_glut_static',
+ 'NpCm_glut_static',
+ 'GABA_static',
+ 'GABA_1v0hr',
+ 'GABA_6v0hr',
+ 'NmCp_glut_1v0hr',
+ 'NpCm_glut_6v0hr',
+ 'NpCm_glut_1v0hr',
+ 'NmCp_glut_6v0hr')
 ld.smaller$annotation <- factor(row.names(ld.smaller), levels=rev(row.names(ld.smaller)[c(1:6,9,8,7)]))
 ld.smaller$lower <- ld.smaller$Enrichment - 1.96 * ld.smaller$Enrichment_std_error
 ld.smaller$upper <- ld.smaller$Enrichment + 1.96 * ld.smaller$Enrichment_std_error
