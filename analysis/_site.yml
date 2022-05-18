@@ -7,7 +7,7 @@ navbar:
     href: index.html
   - text: TORUS
     href: torus.html
-  - text: S-LDSC
+  - text: S-LDSCdvdv
     href: ld_enrichment.html
   - text: Calibration
     href: calibration.html
