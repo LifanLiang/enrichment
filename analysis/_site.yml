@@ -9,6 +9,8 @@ navbar:
     href: torus.html
   - text: S-LDSC
     href: ld_enrichment.html
+  - text: Calibration
+    href: calibration.html
   right:
   - icon: fab fa-github
     text: Source code

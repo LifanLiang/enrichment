@@ -264,8 +264,9 @@ aggr <- do.call("rbind", aggr)
 aggr$enrichment[aggr$enrichment<0] = 0
 
 aggr$annot <- factor(aggr$annot, level=annot[c(1:6,9,8,7)])
-aggr$disease <- factor(aggr$disease, level=diseases[c(10,2,4,6,7,8,9,1,5,3,11)])
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,3,5,7,8,9,10,1,6,4,12)])
 
+pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
 ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment)) + 
   geom_point() +
   scale_color_gradient(low="black", high="red") +
@@ -275,4 +276,5 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(color="-log10(Pvalue)")
   ggtitle("S-LDSC enrichment analysis")
+dev.off()
 ```

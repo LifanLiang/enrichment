@@ -1,0 +1,30 @@
+---
+title: "calibration"
+author: "Lifan Liang"
+date: "2022-05-16"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Real P values
+I obtained count matrix and related R code for analysis from Lexi. The differential accessibility result for NEFM_pos_glut 0hr vs. 1hr was reproduced. I drew QQ plot to compare p values with the theorectical uniform distribution (basically the quantiles). The test method is "MAST". Considering the time for computation, I only compute p values with chr11. Shown below is the log-log QQ plot.
+
+![](assets/qqplots/npglut_1v0_chr11_mast_loglog.png)
+The next figure is the QQ plot without the log scale.
+![](assets/qqplots/npglut_1v0_chr11_mast.png)
+
+### Permutation of p values
+
+I randomly shuffled the labels (0hr and 1hr) of the cells and perform differential analysis with the same parameter settings.
+
+![](assets/qqplots/npglut_permutation_chr11_mast_loglog.png)
+
+![](assets/qqplots/npglut_permutation_chr11_mast.png)
+
+
+
+```{r}
+
+```
+
