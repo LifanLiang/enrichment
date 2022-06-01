@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## LDSC joint enrichment analysis for 18 cell lines from Signac (Lexi)
+## LDSC joint enrichment analysis for 18 cell lines from Signac
 
 
 ```{r setup, include=FALSE}
@@ -78,7 +78,7 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 
 
 
-#### Comparison of heritability in pseudo bulk (joint analysis) in schizophrenia (SCZ)
+#### Comparison of heritability in Signac (joint analysis) in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
@@ -101,10 +101,96 @@ temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
 plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements from pseudo bulk (marginal analysis) in schizophrenia (SCZ)
+#### Dynamic elements vs. static elements from Signac (marginal analysis) in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
+rownames(temp) <- annot
+temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
+temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
+temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
+plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
+
+
+## LDSC joint enrichment analysis for 18 cell lines from pseudoBulk
+```{r, echo=F}
+path <- "data/siwei_18lines_res/"
+res.dir <- list.files(path, pattern="results")
+diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
+diseases[8] <- "insomnia"
+diseases[9] <- "intelligence"
+diseases[11] <- "SCZ"
+aggr <- list()
+for(i in seq_along(res.dir)) {
+  enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
+  temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
+  annot <- c(
+ 'GABA_6vs0',
+ 'Glut_all_1vs0',
+ 'Glut_all_6vs0',
+ 'Npglut_static',
+ 'GABA_static',
+ 'allglu_static',
+ 'GABA_1vs0',
+ 'Nmglut_static',
+ 'NEFM_neg_glut_6vs0',
+ 'NEFM_pos_glut_6vs0',
+ 'NEFM_pos_glut_1vs0',
+ 'NEFM_neg_glut_1vs0')
+  rownames(temp) <- annot
+  aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
+}
+aggr <- do.call("rbind", aggr)
+aggr$enrichment[aggr$enrichment<0] = 0
+
+aggr$annot <- factor(aggr$annot, level=annot[c(5,7,1,8,12,9,4,11,10,6,2,3)])
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
+
+#pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
+ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment)) + 
+  geom_point() +
+  scale_color_gradient(low="black", high="red") +
+  theme_bw() + 
+  ylab("") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(color="-log10(Pvalue)")
+  ggtitle("S-LDSC enrichment analysis")
+#dev.off()
+```
+
+#### Comparison of heritability in pseudo bulk (joint analysis) in schizophrenia (SCZ)
+```{r, echo=F}
+enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
+### These labels and related levels should be used across all diseases
+annot <- c(
+ 'GABA_6vs0',
+ 'Glut_all_1vs0',
+ 'Glut_all_6vs0',
+ 'Npglut_static',
+ 'GABA_static',
+ 'allglu_static',
+ 'GABA_1vs0',
+ 'Nmglut_static',
+ 'NEFM_neg_glut_6vs0',
+ 'NEFM_pos_glut_6vs0',
+ 'NEFM_pos_glut_1vs0',
+ 'NEFM_neg_glut_1vs0')
+lvls <- c(5,7,1,8,12,9,4,11,10,6,2,3)
+rownames(temp) <- annot
+temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
+temp$Prop._h2 <- 100 * temp$Prop._h2
+temp$lower <- temp$Prop._h2 - 196 * temp$Prop._h2_std_error
+temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
+plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
+```
+
+#### Dynamic elements vs. static elements from pseudo bulk (marginal analysis) in schizophrenia (SCZ)
+```{r, echo=F}
+enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
