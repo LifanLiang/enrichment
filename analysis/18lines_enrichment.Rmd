@@ -7,6 +7,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+Like last time, I received DA peaks and cell type by time point peaks from two different procedures. One is from Signac. The other is from pseudobulk. 
+
+
 ## LDSC joint enrichment analysis for 18 cell lines from Signac
 
 
@@ -78,7 +81,7 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 
 
 
-#### Comparison of heritability in Signac (joint analysis) in schizophrenia (SCZ)
+#### Comparison of heritability in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
@@ -101,7 +104,7 @@ temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
 plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements from Signac (marginal analysis) in schizophrenia (SCZ)
+#### Dynamic elements vs. static elements from Signac (enrichment) in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
@@ -160,7 +163,7 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 #dev.off()
 ```
 
-#### Comparison of heritability in pseudo bulk (joint analysis) in schizophrenia (SCZ)
+#### Comparison of heritability in pseudo bulk (heritability) in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
@@ -187,7 +190,7 @@ temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
 plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements from pseudo bulk (marginal analysis) in schizophrenia (SCZ)
+#### Dynamic elements vs. static elements from pseudo bulk (enrichment) in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
