@@ -116,6 +116,35 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 ```
 
 
+### Jaccard coefficients among the dynamic peaks across cell tyeps
+```{r, echo=F}
+library(rtracklayer)
+library(ggplot2)
+
+beds <- list.files("../lexi/dyn_stat_hg19", pattern="0hr", full.names = T)
+dyn.peaks <- list()
+for (b in beds) {
+  temp <- strsplit(b, "/")[[1]][4]
+  dyn.peaks[[temp]] <- import(b)
+}
+
+jaccard <- function(x,y) {
+  length(intersect(x,y)) / length(union(x,y))
+}
+names(dyn.peaks) <- c("GABA_1v0", "GABA_6v0",
+                      "NEFM_neg_glut_1v0", "NEFM_neg_glut_6v0",
+                      "NEFM_pos_glut_1v0", "NEFM_pos_glut_6v0")
+overlap <- expand.grid(x=names(dyn.peaks), y=names(dyn.peaks))
+overlap$Jaccard <- 0
+for (i in 1:length(dyn.peaks)) {
+  overlap$Jaccard[((i-1)*6+1):(i*6)] <- sapply(dyn.peaks, function(x) {jaccard(dyn.peaks[[i]],x)})
+  #overlap$Jaccard[(i-1)*6+i] <- 0 # Set diagonal elements to 0
+}
+overlap$Jaccard_round <- round(overlap$Jaccard,2)
+ggplot(overlap, aes(x, y, fill= Jaccard)) + geom_tile() + geom_text(aes(x, y, label = Jaccard_round), color = "red", size = 4) + theme(axis.text.x=element_text(angle = 45, hjust = 1))
+```
+
+
 ## LDSC joint enrichment analysis for 18 cell lines from pseudoBulk
 ```{r, echo=F}
 path <- "data/siwei_18lines_res/"
@@ -199,4 +228,32 @@ temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
 temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
 plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
+```
+
+```{r, echo=F}
+library(rtracklayer)
+library(ggplot2)
+
+beds <- list.files("../siwei/dyn_stat_hg19", pattern="vs0", full.names = T)
+dyn.peaks <- list()
+for (b in beds) {
+  temp <- strsplit(b, "/")[[1]][4]
+  dyn.peaks[[temp]] <- import(b)
+}
+
+jaccard <- function(x,y) {
+  length(intersect(x,y)) / length(union(x,y))
+}
+names(dyn.peaks) <- c("GABA_1v0", "GABA_6v0",
+                      "Glut_all_1v0", "Glut_all_6v0",
+                      "NEFM_neg_glut_1v0", "NEFM_neg_glut_6v0",
+                      "NEFM_pos_glut_1v0", "NEFM_pos_glut_6v0")
+overlap <- expand.grid(x=names(dyn.peaks), y=names(dyn.peaks))
+overlap$Jaccard <- 0
+for (i in 1:length(dyn.peaks)) {
+  overlap$Jaccard[((i-1)*8+1):(i*8)] <- sapply(dyn.peaks, function(x) {jaccard(dyn.peaks[[i]],x)})
+  #overlap$Jaccard[(i-1)*8+i] <- 0 # Set diagonal elements to 0
+}
+overlap$Jaccard_round <- round(overlap$Jaccard,2)
+ggplot(overlap, aes(x, y, fill= Jaccard)) + geom_tile() + geom_text(aes(x, y, label = Jaccard_round), color = "red", size = 4) + theme(axis.text.x=element_text(angle = 45, hjust = 1))
 ```
