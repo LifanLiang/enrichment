@@ -9,9 +9,26 @@ editor_options:
 
 Like last time, I received DA peaks and cell type by time point peaks from two different procedures. One is from Signac. The other is from pseudobulk. 
 
+## Peak count statistics
+DA peaks from Signac (Lexi) are 2 time points (1hr and 6hr) by 3 cell types (GABA, NEFM pos glut, and NEFM neg glut). FDR cutoff was 0.05.
+```{r, echo=F}
+table <- read.table("../lexi/lexi_18line_dynpeaks.counts")
+knitr::kable(table)
+```
+
+DA peaks from pseudobulk (Siwei) are 2 time points by 4 cell types (the extra is glut all). FDR cutoff was 0.05.
+```{r, echo=F}
+table <- read.table("../siwei/peak_countssiwei_18line_dynpeaks.counts")
+knitr::kable(table)
+```
+
+Static peaks was derived from removing DA peaks from the 0hr peak sets.
+```{r, echo=F}
+table <- read.table("../siwei/static_peak_counts.tsv")
+knitr::kable(table)
+```
 
 ## LDSC joint enrichment analysis for 18 cell lines from Signac
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
