@@ -134,7 +134,7 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 
 
 ### Jaccard coefficients among the dynamic peaks across cell tyeps
-```{r, echo=F}
+```{r, echo=F, message=F}
 library(rtracklayer)
 library(ggplot2)
 
