@@ -1,7 +1,7 @@
 ---
-title: "18lines_enrichment"
+title: "18 line enrichment (Aug 22 update)"
 author: "Lifan Liang"
-date: "2022-05-26"
+date: "2022-08-22"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -9,9 +9,21 @@ editor_options:
 
 Like last time, I received DA peaks and cell type by time point peaks from two different procedures. One is from Signac. The other is from pseudobulk. 
 
+## Peak count statistics
+DA peaks from Signac (Lexi) are 2 time points (1hr and 6hr) by 3 cell types (GABA, NEFM pos glut, and NEFM neg glut). FDR cutoff was 0.05.
+```{r, echo=F}
+table <- read.table("../lexi/updatedcutoff_0819_fdr5/lexi_updatedcutoff_fdr5_0819.counts")
+knitr::kable(table)
+```
 
-## LDSC joint enrichment analysis for 18 cell lines from Signac
+DA peaks from the pseudobulk approach
+```{r, echo=F}
+table <- read.table("../lexi/pseudobulk_0818_fdr5/lexi_pseudobulk_fdr5_0818.counts")
+knitr::kable(table)
+```
 
+
+## LDSC joint enrichment analysis for Signac approach
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -38,7 +50,7 @@ plot_h2 = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
 
 #### Enrichment analysis applied to various diseases
 ```{r, echo=F}
-path <- "data/lexi_18lines_res/"
+path <- "data/lexi_updatedcutoff_0819/"
 res.dir <- list.files(path, pattern="results")
 diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
 diseases[8] <- "insomnia"
@@ -48,22 +60,22 @@ aggr <- list()
 for(i in seq_along(res.dir)) {
   enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
   temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
-  annot <- c('NEFM_pos_glut_1v0hr',
+  annot <- c('NEFM_neg_glut_1v0hr',
+ 'NEFM_pos_glut_1v0hr',
+ 'GABA_1v0h',
  'Npglut_static',
- 'NEFM_neg_glut_1v0hr',
- 'NEFM_neg_glut_6v0hr',
  'NEFM_pos_glut_6v0hr',
+ 'GABA_6v0hr',
+ 'NEFM_neg_glut_6v0hr',
  'Nmglut_static',
- 'GABA_1v0hr',
- 'GABA_static',
- 'GABA_6v0hr')
+ 'GABA_static')
   rownames(temp) <- annot
   aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
 }
 aggr <- do.call("rbind", aggr)
 aggr$enrichment[aggr$enrichment<0] = 0
 
-aggr$annot <- factor(aggr$annot, level=annot[c(6,3,4,2,1,5,8,7,9)])
+aggr$annot <- factor(aggr$annot, level=rev(annot[c(6,5,7,3,2,1,9,4,8)]))
 aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
 
 #pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
@@ -79,23 +91,21 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 #dev.off()
 ```
 
-
-
-#### Comparison of heritability in schizophrenia (SCZ)
+#### Comparison of total heritability in schizophrenia (SCZ)
 ```{r, echo=F}
-enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+enrich.ld <- read.table("data/lexi_updatedcutoff_0819/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
 ### These labels and related levels should be used across all diseases
-annot <- c('NEFM_pos_glut_1v0hr',
+annot <- c('NEFM_neg_glut_1v0hr',
+ 'NEFM_pos_glut_1v0hr',
+ 'GABA_1v0h',
  'Npglut_static',
- 'NEFM_neg_glut_1v0hr',
- 'NEFM_neg_glut_6v0hr',
  'NEFM_pos_glut_6v0hr',
+ 'GABA_6v0hr',
+ 'NEFM_neg_glut_6v0hr',
  'Nmglut_static',
- 'GABA_1v0hr',
- 'GABA_static',
- 'GABA_6v0hr')
-lvls <- c(2:4,6,1,5,8,7,9)
+ 'GABA_static')
+lvls <- rev(c(6,3,9,5,2,4,7,1,8))
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
 temp$Prop._h2 <- 100 * temp$Prop._h2
@@ -104,9 +114,9 @@ temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
 plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements from Signac (enrichment) in schizophrenia (SCZ)
+#### Per SNP heritability (enrichment) from Signac (enrichment) in schizophrenia (SCZ)
 ```{r, echo=F}
-enrich.ld <- read.table("data/lexi_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+enrich.ld <- read.table("data/lexi_updatedcutoff_0819/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
 temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
@@ -116,38 +126,11 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 ```
 
 
-### Jaccard coefficients among the dynamic peaks across cell tyeps
+
+
+## LDSC joint enrichment analysis for various diseases GWAS from pseudoBulk
 ```{r, echo=F}
-library(rtracklayer)
-library(ggplot2)
-
-beds <- list.files("../lexi/dyn_stat_hg19", pattern="0hr", full.names = T)
-dyn.peaks <- list()
-for (b in beds) {
-  temp <- strsplit(b, "/")[[1]][4]
-  dyn.peaks[[temp]] <- import(b)
-}
-
-jaccard <- function(x,y) {
-  length(intersect(x,y)) / length(union(x,y))
-}
-names(dyn.peaks) <- c("GABA_1v0", "GABA_6v0",
-                      "NEFM_neg_glut_1v0", "NEFM_neg_glut_6v0",
-                      "NEFM_pos_glut_1v0", "NEFM_pos_glut_6v0")
-overlap <- expand.grid(x=names(dyn.peaks), y=names(dyn.peaks))
-overlap$Jaccard <- 0
-for (i in 1:length(dyn.peaks)) {
-  overlap$Jaccard[((i-1)*6+1):(i*6)] <- sapply(dyn.peaks, function(x) {jaccard(dyn.peaks[[i]],x)})
-  #overlap$Jaccard[(i-1)*6+i] <- 0 # Set diagonal elements to 0
-}
-overlap$Jaccard_round <- round(overlap$Jaccard,2)
-ggplot(overlap, aes(x, y, fill= Jaccard)) + geom_tile() + geom_text(aes(x, y, label = Jaccard_round), color = "red", size = 4) + theme(axis.text.x=element_text(angle = 45, hjust = 1))
-```
-
-
-## LDSC joint enrichment analysis for 18 cell lines from pseudoBulk
-```{r, echo=F}
-path <- "data/siwei_18lines_res/"
+path <- "data/lexi_pseudobulk_0818/"
 res.dir <- list.files(path, pattern="results")
 diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
 diseases[8] <- "insomnia"
@@ -156,27 +139,24 @@ diseases[11] <- "SCZ"
 aggr <- list()
 for(i in seq_along(res.dir)) {
   enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
-  temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
+  temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
   annot <- c(
- 'GABA_6vs0',
- 'Glut_all_1vs0',
- 'Glut_all_6vs0',
+ 'nmglut_1v0hr',
+ 'GABA_1v0hr',
+ 'nmglut_6v0hr',
  'Npglut_static',
- 'GABA_static',
- 'allglu_static',
- 'GABA_1vs0',
+ 'GABA_6v0hr',
  'Nmglut_static',
- 'NEFM_neg_glut_6vs0',
- 'NEFM_pos_glut_6vs0',
- 'NEFM_pos_glut_1vs0',
- 'NEFM_neg_glut_1vs0')
+ 'npglut_6v0hr',
+ 'GABA_static',
+ 'npglut_1v0hr')
   rownames(temp) <- annot
   aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
 }
 aggr <- do.call("rbind", aggr)
 aggr$enrichment[aggr$enrichment<0] = 0
 
-aggr$annot <- factor(aggr$annot, level=annot[c(5,7,1,8,12,9,4,11,10,6,2,3)])
+aggr$annot <- factor(aggr$annot, level=annot[c(6,4,8,1,9,2,3,7,5)])
 aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
 
 #pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
@@ -192,25 +172,11 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 #dev.off()
 ```
 
-#### Comparison of heritability in pseudo bulk (heritability) in schizophrenia (SCZ)
+#### Comparison of total heritability in pseudo bulk (heritability) in schizophrenia (SCZ)
 ```{r, echo=F}
-enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
-temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
-### These labels and related levels should be used across all diseases
-annot <- c(
- 'GABA_6vs0',
- 'Glut_all_1vs0',
- 'Glut_all_6vs0',
- 'Npglut_static',
- 'GABA_static',
- 'allglu_static',
- 'GABA_1vs0',
- 'Nmglut_static',
- 'NEFM_neg_glut_6vs0',
- 'NEFM_pos_glut_6vs0',
- 'NEFM_pos_glut_1vs0',
- 'NEFM_neg_glut_1vs0')
-lvls <- c(5,7,1,8,12,9,4,11,10,6,2,3)
+enrich.ld <- read.table("data/lexi_pseudobulk_0818/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
+lvls <- c(6,1,3,4,9,7,8,2,5)
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
 temp$Prop._h2 <- 100 * temp$Prop._h2
@@ -219,10 +185,10 @@ temp$upper <- temp$Prop._h2 + 196 * temp$Prop._h2_std_error
 plot_h2(temp, "", xlab = '% of SNP heritability explained', ylab = "Functional annotations")
 ```
 
-#### Dynamic elements vs. static elements from pseudo bulk (enrichment) in schizophrenia (SCZ)
+#### Per SNP heritability (enrichment) from pseudo bulk  in schizophrenia (SCZ)
 ```{r, echo=F}
-enrich.ld <- read.table("data/siwei_18lines_res/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
-temp <- enrich.ld[(nrow(enrich.ld)-11):nrow(enrich.ld),]
+enrich.ld <- read.table("data/lexi_pseudobulk_0818/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
+temp <- enrich.ld[(nrow(enrich.ld)-8):nrow(enrich.ld),]
 rownames(temp) <- annot
 temp$annotation <- factor(rownames(temp), level=rownames(temp)[lvls])
 temp$lower <- temp$Enrichment - 1.96 * temp$Enrichment_std_error
@@ -230,30 +196,7 @@ temp$upper <- temp$Enrichment + 1.96 * temp$Enrichment_std_error
 plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional annotations")
 ```
 
-```{r, echo=F}
-library(rtracklayer)
-library(ggplot2)
 
-beds <- list.files("../siwei/dyn_stat_hg19", pattern="vs0", full.names = T)
-dyn.peaks <- list()
-for (b in beds) {
-  temp <- strsplit(b, "/")[[1]][4]
-  dyn.peaks[[temp]] <- import(b)
-}
 
-jaccard <- function(x,y) {
-  length(intersect(x,y)) / length(union(x,y))
-}
-names(dyn.peaks) <- c("GABA_1v0", "GABA_6v0",
-                      "Glut_all_1v0", "Glut_all_6v0",
-                      "NEFM_neg_glut_1v0", "NEFM_neg_glut_6v0",
-                      "NEFM_pos_glut_1v0", "NEFM_pos_glut_6v0")
-overlap <- expand.grid(x=names(dyn.peaks), y=names(dyn.peaks))
-overlap$Jaccard <- 0
-for (i in 1:length(dyn.peaks)) {
-  overlap$Jaccard[((i-1)*8+1):(i*8)] <- sapply(dyn.peaks, function(x) {jaccard(dyn.peaks[[i]],x)})
-  #overlap$Jaccard[(i-1)*8+i] <- 0 # Set diagonal elements to 0
-}
-overlap$Jaccard_round <- round(overlap$Jaccard,2)
-ggplot(overlap, aes(x, y, fill= Jaccard)) + geom_tile() + geom_text(aes(x, y, label = Jaccard_round), color = "red", size = 4) + theme(axis.text.x=element_text(angle = 45, hjust = 1))
-```
+
+
