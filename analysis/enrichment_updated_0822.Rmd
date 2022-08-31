@@ -25,7 +25,17 @@ knitr::kable(table)
 
 ## LDSC joint enrichment analysis for Signac approach
 
-```{r setup, include=FALSE}
+"Static peaks" are derived by removing DA peaks from the peak sets called for 0hr time point.
+
+```{r, echo=F}
+beds <- list.files("../lexi/updatedcutoff_0819_hg19")
+beds <- beds[grepl("static", beds)]
+static.counts <- sapply(beds, function(x) {nrow(read.table(paste0("../lexi/updatedcutoff_0819_hg19/", x)))})
+knitr::kable(static.counts)
+```
+
+
+```{r setup, include=FALSE, message=F}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 #library(rtracklayer)
@@ -91,6 +101,9 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
 #dev.off()
 ```
 
+
+
+
 #### Comparison of total heritability in schizophrenia (SCZ)
 ```{r, echo=F}
 enrich.ld <- read.table("data/lexi_updatedcutoff_0819/PGC3_dyn_vs_stat_joint.results", sep="\t", header=T, row.names=1)
@@ -129,7 +142,7 @@ plot_enrichment(temp, "", xlab = 'enrichment of SZ variants', ylab = "Functional
 
 
 ## LDSC joint enrichment analysis for various diseases GWAS from pseudoBulk
-```{r, echo=F}
+```{r, echo=F, message=F}
 path <- "data/lexi_pseudobulk_0818/"
 res.dir <- list.files(path, pattern="results")
 diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
@@ -171,6 +184,9 @@ ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment
   ggtitle("S-LDSC enrichment analysis")
 #dev.off()
 ```
+
+
+
 
 #### Comparison of total heritability in pseudo bulk (heritability) in schizophrenia (SCZ)
 ```{r, echo=F}

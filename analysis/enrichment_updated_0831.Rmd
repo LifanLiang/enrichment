@@ -1,0 +1,248 @@
+---
+title: "enrichment_updated_0831"
+author: "Lifan Liang"
+date: "2022-08-31"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, message=F}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+#library(rtracklayer)
+
+plot_enrichment = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+  p1 <- ggplot(dat, aes(y=annotation)) + 
+    geom_point(aes(x=Enrichment), colour="#800000") + #plot OR
+    geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
+  p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
+  p1
+}
+
+
+plot_h2 = function(dat, title, xlab="Odds ratio", ylab="Annotations") {
+  p1 <- ggplot(dat, aes(y=annotation)) + 
+    geom_point(aes(x=Prop._h2), colour="#800000") + #plot OR
+    geom_segment(aes(x=lower,xend=upper,yend=annotation), alpha=0.8)
+  p1 <- p1 + geom_vline(xintercept=0) + theme_bw() + labs(title=title, x=xlab, y=ylab)
+  p1
+}
+```
+
+## Enrichment analysis separating upregulated peaks and downregulated peaks (Signac)
+```{r, echo=F}
+temp <- read.table("data/lexi_updatedcutoff_0829_separate.count")
+knitr::kable(temp)
+```
+
+Upregulated peaks have higher heritability due to much more peaks. However, they did not have higher enrichment (heritability per SNPs) compared to downregulated peaks.
+
+#### Heritability per SNP (enrichment) of various diseases
+
+```{r, echo=F}
+path <- "data/lexi_updatedcutoff_separate_0829/"
+res.dir <- list.files(path, pattern="results")
+diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
+diseases[8] <- "insomnia"
+diseases[9] <- "intelligence"
+diseases[11] <- "SCZ"
+aggr <- list()
+for(i in seq_along(res.dir)) {
+  enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
+  temp <- enrich.ld[(nrow(enrich.ld)-14):nrow(enrich.ld),]
+  annot <- c(
+ 'down_NEFM_neg_glut_1v0hr',
+ 'up_NEFM_pos_glut_1v0hr',
+ 'down_NEFM_pos_glut_1v0hr',
+ 'down_GABA_1v0hr',
+ 'up_GABA_6v0hr',
+ 'Npglut_static',
+ 'down_NEFM_pos_glut_6v0hr',
+ 'down_GABA_6v0hr',
+ 'down_NEFM_neg_glut_6v0hr',
+ 'up_NEFM_neg_glut_6v0hr',
+ 'Nmglut_static',
+ 'up_NEFM_pos_glut_6v0hr',
+ 'up_NEFM_neg_glut_1v0hr',
+ 'up_GABA_1v0hr',
+ 'GABA_static')
+  rownames(temp) <- annot
+  aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
+}
+aggr <- do.call("rbind", aggr)
+aggr$enrichment[aggr$enrichment<0] = 0
+
+aggr$annot <- factor(aggr$annot, level=rev(annot[c(5,8,12,7,10,9,14,4,2,3,13,1,15,6,11)]))
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
+
+#pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
+ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment)) + 
+  geom_point() +
+  scale_color_gradient(low="black", high="red") +
+  theme_bw() + 
+  ylab("") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(color="-log10(Pvalue)")
+  ggtitle("S-LDSC enrichment analysis")
+#dev.off()
+```
+
+#### Total heritability explained by the DA peaks from Signac
+```{r, echo=F}
+path <- "data/lexi_updatedcutoff_separate_0829/"
+res.dir <- list.files(path, pattern="results")
+diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
+diseases[8] <- "insomnia"
+diseases[9] <- "intelligence"
+diseases[11] <- "SCZ"
+aggr <- list()
+for(i in seq_along(res.dir)) {
+  enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
+  temp <- enrich.ld[(nrow(enrich.ld)-14):nrow(enrich.ld),]
+  annot <- c(
+ 'down_NEFM_neg_glut_1v0hr',
+ 'up_NEFM_pos_glut_1v0hr',
+ 'down_NEFM_pos_glut_1v0hr',
+ 'down_GABA_1v0hr',
+ 'up_GABA_6v0hr',
+ 'Npglut_static',
+ 'down_NEFM_pos_glut_6v0hr',
+ 'down_GABA_6v0hr',
+ 'down_NEFM_neg_glut_6v0hr',
+ 'up_NEFM_neg_glut_6v0hr',
+ 'Nmglut_static',
+ 'up_NEFM_pos_glut_6v0hr',
+ 'up_NEFM_neg_glut_1v0hr',
+ 'up_GABA_1v0hr',
+ 'GABA_static')
+  rownames(temp) <- annot
+  aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, heritability=temp$Prop._h2, enrichment_pval=-log10(temp$Enrichment_p))
+}
+aggr <- do.call("rbind", aggr)
+aggr$heritability[aggr$heritability<0] = 0
+
+aggr$annot <- factor(aggr$annot, level=rev(annot[c(5,8,12,7,10,9,14,4,2,3,13,1,15,6,11)]))
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
+
+#pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
+ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=heritability)) + 
+  geom_point() +
+  scale_color_gradient(low="black", high="red") +
+  theme_bw() + 
+  ylab("") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(color="-log10(Pvalue)")
+  ggtitle("S-LDSC enrichment analysis")
+#dev.off()
+```
+
+## Enrichment analysis separating upregulating peaks and downregulating peaks (pseudobulk)
+```{r, echo=F}
+temp <- read.table("data/lexi_pseudobulk_0830_separate.count")
+knitr::kable(temp)
+```
+
+#### Heritability per SNP (enrichment) of various diseases
+```{r, echo=F, message=F}
+library(ggplot2)
+path <- "data/lexi_pseudobulk_separate_0830/"
+res.dir <- list.files(path, pattern="results")
+diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
+diseases[8] <- "insomnia"
+diseases[9] <- "intelligence"
+diseases[11] <- "SCZ"
+aggr <- list()
+for(i in seq_along(res.dir)) {
+  enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
+  temp <- enrich.ld[(nrow(enrich.ld)-14):nrow(enrich.ld),]
+  annot <- c(
+ 'down_nmglut_1v0hr',
+ 'down_GABA_6v0hr',
+ 'up_npglut_6v0hr',
+ 'down_GABA_1v0hr',
+ 'up_npglut_1v0hr',
+ 'Npglut_static',
+ 'down_nmglut_6v0hr',
+ 'Nmglut_static',
+ 'up_nmglut_1v0hr',
+ 'down_npglut_6v0hr',
+ 'up_GABA_1v0hr',
+ 'down_npglut_1v0hr',
+ 'up_GABA_6v0hr',
+ 'GABA_static',
+ 'up_nmglut_6v0hr')
+  rownames(temp) <- annot
+  aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, enrichment=temp$Enrichment, enrichment_pval=-log10(temp$Enrichment_p))
+}
+aggr <- do.call("rbind", aggr)
+aggr$enrichment[aggr$enrichment<0] = 0
+
+aggr$annot <- factor(aggr$annot, level=rev(annot[c(13,2,3,10,15,7,11,4,5,12,9,1,14,6,8)]))
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
+
+#pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
+ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=enrichment)) + 
+  geom_point() +
+  scale_color_gradient(low="black", high="red") +
+  theme_bw() + 
+  ylab("") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(color="-log10(Pvalue)")
+  ggtitle("S-LDSC enrichment analysis")
+#dev.off()
+```
+
+#### Total heritability explained by the DA peaks from pseudobulk
+```{r, echo=F, message=F}
+library(ggplot2)
+path <- "data/lexi_pseudobulk_separate_0830/"
+res.dir <- list.files(path, pattern="results")
+diseases <- sapply(strsplit(res.dir,"_"), function(x) {x[1]})
+diseases[8] <- "insomnia"
+diseases[9] <- "intelligence"
+diseases[11] <- "SCZ"
+aggr <- list()
+for(i in seq_along(res.dir)) {
+  enrich.ld <- read.table(paste0(path, res.dir[i]), sep="\t", header=T, row.names=1)
+  temp <- enrich.ld[(nrow(enrich.ld)-14):nrow(enrich.ld),]
+  annot <- c(
+ 'down_nmglut_1v0hr',
+ 'down_GABA_6v0hr',
+ 'up_npglut_6v0hr',
+ 'down_GABA_1v0hr',
+ 'up_npglut_1v0hr',
+ 'Npglut_static',
+ 'down_nmglut_6v0hr',
+ 'Nmglut_static',
+ 'up_nmglut_1v0hr',
+ 'down_npglut_6v0hr',
+ 'up_GABA_1v0hr',
+ 'down_npglut_1v0hr',
+ 'up_GABA_6v0hr',
+ 'GABA_static',
+ 'up_nmglut_6v0hr')
+  rownames(temp) <- annot
+  aggr[[i]] <- data.frame(disease=diseases[i], annot=annot, heritablity=temp$Prop._h2, enrichment_pval=-log10(temp$Enrichment_p))
+}
+aggr <- do.call("rbind", aggr)
+aggr$heritablity[aggr$heritablity<0] = 0
+
+aggr$annot <- factor(aggr$annot, level=rev(annot[c(13,2,3,10,15,7,11,4,5,12,9,1,14,6,8)]))
+aggr$disease <- factor(aggr$disease, level=diseases[c(11,2,5,7,8,9,10,1,6,4,12,3)])
+
+#pdf("~/Documents/neuron_stim/Signac_various_diseases_enrichment.pdf", width = 9, height=5)
+ggplot(data=aggr, aes(x=disease, y=annot, color=enrichment_pval, size=heritablity)) + 
+  geom_point() +
+  scale_color_gradient(low="black", high="red") +
+  theme_bw() + 
+  ylab("") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(color="-log10(Pvalue)")
+  ggtitle("S-LDSC enrichment analysis")
+#dev.off()
+```

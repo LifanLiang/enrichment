@@ -1,0 +1,7 @@
+total	upregulated	downregulated	fdr.05
+GABA_1v0hr_full.bed	172759	36336	22800	59136
+GABA_6v0hr_full.bed	172759	40595	29016	69611
+nmglut_1v0hr_full.bed	196083	31691	19550	51241
+nmglut_6v0hr_full.bed	196083	45647	37099	82746
+npglut_1v0hr_full.bed	207450	40064	31327	71391
+npglut_6v0hr_full.bed	207450	52929	52847	105776
